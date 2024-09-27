@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import UserItem from "../userItem/UserItem";
 import useToastListener from "../toaster/ToastListenerHook";
+import useUserNavigation from "../userInfo/UserNavigation";
 import useUserInfo from "../userInfo/UserInfoHook";
 
 export const PAGE_SIZE = 10;

@@ -1,14 +1,11 @@
 interface Props {
-    originalUrl?: string
     onEnter: (event: React.KeyboardEvent<HTMLElement>) => void
     setPassword: (password: string) => void
     setAlias: (alias: string) => void
 }
 
 
-const AuthenticationFields = (props: Props) => {
-    //const [password, setPassword] = useState("");
-    //const [alias, setAlias] = useState("");  
+const AuthenticationFields = (props: Props) => { 
 
     return (
         <>
