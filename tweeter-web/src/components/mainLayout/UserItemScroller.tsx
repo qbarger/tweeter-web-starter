@@ -5,6 +5,7 @@ import UserItem from "../userItem/UserItem";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserNavigation from "../userInfo/UserNavigation";
 import useUserInfo from "../userInfo/UserInfoHook";
+import UserItemPresenter, { UserItemView } from "../../presenters/UserItemPresenter";
 
 export const PAGE_SIZE = 10;
 
@@ -16,6 +17,7 @@ interface Props {
     lastItem: User | null
   ) => Promise<[User[], boolean]>;
   itemDescription: string;
+  presenterGenerator: (view: UserItemView) => UserItemPresenter 
 }
 
 const UserItemScroller = (props: Props) => {
@@ -57,6 +59,12 @@ const UserItemScroller = (props: Props) => {
     setHasMoreItems(true);
     setChangedDisplayedUser(true);
   }
+
+  const listener: UserItemView = {
+    
+  }
+
+  const presenter = props.presenterGenerator(listener)
 
   const loadMoreItems = async () => {
     try {
