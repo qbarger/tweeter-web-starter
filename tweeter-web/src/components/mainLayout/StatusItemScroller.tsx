@@ -5,27 +5,17 @@ import useToastListener from "../toaster/ToastListenerHook";
 import StatusItem from "../statusItem/StatusItem";
 import useUserNavigation from "../userInfo/UserNavigation";
 import useUserInfo from "../userInfo/UserInfoHook";
-
-export const PAGE_SIZE = 10;
+import { StatusItemPresenter, StatusItemView } from "../../presenters/StatusItemPresenter"; 
 
 interface Props {
-    loadMoreStuff: (authToken: AuthToken,
-        userAlias: string,
-        pageSize: number,
-        lastItem: Status | null) => Promise<[Status[], boolean]>
-    itemDescription: string
+  presenterGenerator: (view: StatusItemView) => StatusItemPresenter
 }
 
 const StatusItemScroller = (props: Props) => {
   const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<Status[]>([]);
   const [newItems, setNewItems] = useState<Status[]>([]);
-  const [hasMoreItems, setHasMoreItems] = useState(true);
-  const [lastItem, setLastItem] = useState<Status | null>(null);
   const [changedDisplayedUser, setChangedDisplayedUser] = useState(true);
-
-  const addItems = (newItems: Status[]) =>
-    setNewItems(newItems);
   
   const { displayedUser, authToken } = useUserInfo();
 
@@ -51,11 +41,25 @@ const StatusItemScroller = (props: Props) => {
   const reset = async () => {
     setItems([]);
     setNewItems([]);
-    setLastItem(null);
-    setHasMoreItems(true);
     setChangedDisplayedUser(true);
+
+    presenter.reset()
   }
 
+  const listener: StatusItemView = {
+    addItems: (newItems: Status[]) =>
+      setNewItems(newItems),
+    displayErrorMessage: displayErrorMessage
+  }
+
+  const [presenter] = useState(props.presenterGenerator(listener))
+
+  const loadMoreItems = async () => {
+    presenter.loadMoreItems(authToken!, displayedUser!.alias)
+    setChangedDisplayedUser(false)
+  }
+
+  /*
   const loadMoreItems = async () => {
     try {
       const [newItems, hasMore] = await props.loadMoreStuff(
@@ -75,6 +79,7 @@ const StatusItemScroller = (props: Props) => {
       );
     }
   };
+  */
 
   return (
     <div className="container px-0 overflow-visible vh-100">
@@ -82,7 +87,7 @@ const StatusItemScroller = (props: Props) => {
         className="pr-0 mr-0"
         dataLength={items.length}
         next={loadMoreItems}
-        hasMore={hasMoreItems}
+        hasMore={presenter.hasMoreItems}
         loader={<h4>Loading...</h4>}
       >
         {items.map((item, index) => (
