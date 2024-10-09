@@ -8,9 +8,11 @@ import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
 import useUserNavigation from "../../userInfo/UserNavigation";
 import useUserInfo from "../../userInfo/UserInfoHook";
+import { LoginPresenter, LoginView } from "../../../presenters/LoginPresenter";
 
 interface Props {
   originalUrl?: string;
+  presenterGenerator: (view: LoginView) => LoginPresenter
 }
 
 const Login = (props: Props) => {
@@ -33,6 +35,19 @@ const Login = (props: Props) => {
     }
   };
 
+  const listener: LoginView = {
+    displayErrorMessage: displayErrorMessage,
+    setIsLoading: setIsLoading,
+    updateUserInfo: updateUserInfo
+  }
+
+  const [presenter] = useState(props.presenterGenerator(listener))
+
+  const doLogin = () => {
+    presenter.doLogin(alias, password, rememberMe, props.originalUrl!)
+  }
+
+  /*
   const doLogin = async () => {
     try {
       setIsLoading(true);
@@ -68,6 +83,7 @@ const Login = (props: Props) => {
 
     return [user, FakeData.instance.authToken];
   };
+  */
 
   const inputFieldGenerator = () => {
     return (
