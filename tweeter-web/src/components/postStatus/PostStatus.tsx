@@ -4,8 +4,13 @@ import { AuthToken, Status } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserNavigation from "../userInfo/UserNavigation";
 import useUserInfo from "../userInfo/UserInfoHook";
+import { PostStatusPresenter, PostStatusView } from "../../presenters/PostStatusPresenter";
 
-const PostStatus = () => {
+interface Props {
+  presenterGenerator: (view: PostStatusView) => PostStatusPresenter
+}
+
+const PostStatus = (props: Props) => {
   const { displayErrorMessage, displayInfoMessage, clearLastInfoMessage } =
     useToastListener();
 
@@ -13,6 +18,21 @@ const PostStatus = () => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const listener: PostStatusView = {
+    displayErrorMessage: displayErrorMessage,
+    displayInfoMessage: displayInfoMessage,
+    clearLastInfoMessage: clearLastInfoMessage,
+    setPost: setPost,
+    setIsLoading: setIsLoading
+  }
+
+  const [presenter] = useState(props.presenterGenerator(listener))
+
+  const submitPost = (event: React.MouseEvent) => {
+    presenter.submitPost(event, post, currentUser, authToken)
+  }
+
+  /*
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
 
@@ -45,6 +65,7 @@ const PostStatus = () => {
 
     // TODO: Call the server to post the status
   };
+  */
 
   const clearPost = (event: React.MouseEvent) => {
     event.preventDefault();

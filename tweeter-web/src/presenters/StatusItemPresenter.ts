@@ -1,7 +1,7 @@
 import { AuthToken, Status } from "tweeter-shared"
 
 export interface StatusItemView {
-    addItems: (statusItems: Status[]) => void
+    addItems: (statusItems: Status[]) => void 
     displayErrorMessage: (message: string) => void
 }
 

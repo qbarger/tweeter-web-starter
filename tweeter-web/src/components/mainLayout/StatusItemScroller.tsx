@@ -1,11 +1,10 @@
-import { AuthToken, Status } from "tweeter-shared";
+import { Status } from "tweeter-shared";
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useToastListener from "../toaster/ToastListenerHook";
 import StatusItem from "../statusItem/StatusItem";
-import useUserNavigation from "../userInfo/UserNavigation";
 import useUserInfo from "../userInfo/UserInfoHook";
-import { StatusItemPresenter, StatusItemView } from "../../presenters/StatusItemPresenter"; 
+import { StatusItemPresenter, StatusItemView } from "../../presenters/StatusItemPresenter";  
 
 interface Props {
   presenterGenerator: (view: StatusItemView) => StatusItemPresenter
