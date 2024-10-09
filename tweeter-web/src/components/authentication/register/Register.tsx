@@ -8,8 +8,13 @@ import { Buffer } from "buffer";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
+import { RegisterPresenter, RegisterView } from "../../../presenters/RegisterPresenter";
 
-const Register = () => {
+interface Props {
+  presenterGenerator: (view: RegisterView) => RegisterPresenter
+}
+
+const Register = (props: Props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [alias, setAlias] = useState("");
@@ -46,7 +51,7 @@ const Register = () => {
     handleImageFile(file);
   };
 
-  const handleImageFile = (file: File | undefined) => {
+  const handleImageFile = (file: File | undefined) => { 
     if (file) {
       setImageUrl(URL.createObjectURL(file));
 
@@ -82,6 +87,19 @@ const Register = () => {
     return file.name.split(".").pop();
   };
 
+  const listener: RegisterView = {
+    displayErrorMessage: displayErrorMessage,
+    updateUserInfo: updateUserInfo,
+    setIsLoading: setIsLoading
+  }
+
+  const [presenter] = useState(props.presenterGenerator(listener))
+
+  const doRegister = () => {
+    presenter.doRegister(rememberMe, firstName, lastName, alias, password, imageBytes, imageFileExtension)
+  }
+
+  /*
   const doRegister = async () => {
     try {
       setIsLoading(true);
@@ -127,6 +145,7 @@ const Register = () => {
 
     return [user, FakeData.instance.authToken];
   };
+  */
 
   const inputFieldGenerator = () => {
     return (
