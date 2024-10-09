@@ -58,28 +58,6 @@ const StatusItemScroller = (props: Props) => {
     setChangedDisplayedUser(false)
   }
 
-  /*
-  const loadMoreItems = async () => {
-    try {
-      const [newItems, hasMore] = await props.loadMoreStuff(
-        authToken!,
-        displayedUser!.alias,
-        PAGE_SIZE,
-        lastItem
-      );
-
-      setHasMoreItems(hasMore);
-      setLastItem(newItems[newItems.length - 1]);
-      addItems(newItems);
-      setChangedDisplayedUser(false)
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to load ${props.itemDescription} items because of exception: ${error}`
-      );
-    }
-  };
-  */
-
   return (
     <div className="container px-0 overflow-visible vh-100">
       <InfiniteScroll
