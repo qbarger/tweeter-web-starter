@@ -1,12 +1,10 @@
 import "./Login.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
-import { AuthToken, FakeData, User } from "tweeter-shared";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
-import useUserNavigation from "../../userInfo/UserNavigation";
 import useUserInfo from "../../userInfo/UserInfoHook";
 import { LoginPresenter, LoginView } from "../../../presenters/LoginPresenter";
 
@@ -21,7 +19,6 @@ const Login = (props: Props) => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false); 
 
-  const navigate = useNavigate();
   const { updateUserInfo } = useUserInfo();
   const { displayErrorMessage } = useToastListener();
 

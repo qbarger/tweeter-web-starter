@@ -9,8 +9,8 @@ interface Props {
 }
 
 const Post = (props: Props) => {
-  const { setDisplayedUser, currentUser, authToken } = useUserInfo();
-  const { displayErrorMessage } = useToastListener();
+  useUserInfo();
+  useToastListener();
 
   const navigateToUser = useUserNavigation()
 

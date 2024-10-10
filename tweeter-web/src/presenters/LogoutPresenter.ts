@@ -1,6 +1,5 @@
-import { User, AuthToken } from "tweeter-shared";
+import { AuthToken } from "tweeter-shared";
 import UserService from "../model/service/UserService";
-import { useNavigate } from "react-router-dom";
 
 export interface LogoutView {
     displayInfoMessage: (message: string, duration: number, bootstrapClasses?: string) => void

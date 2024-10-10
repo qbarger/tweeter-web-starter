@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Post from "../statusItem/Post";
-import { AuthToken, Status, User } from "tweeter-shared";
+import { Status } from "tweeter-shared";
 import useUserNavigation from "../userInfo/UserNavigation";
 
 interface Props {

@@ -1,7 +1,5 @@
 import { AuthToken, User } from "tweeter-shared";
 import UserService from "../model/service/UserService";
-import useUserInfo from "../components/userInfo/UserInfoHook";
-import useToastListener from "../components/toaster/ToastListenerHook";
 
 export interface UserNavigationView {
     displayErrorMessage: (message: string, bootstrapClasses?: string) => void
