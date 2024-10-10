@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "./UserInfoHook";
+import { UserInfoPresenter, UserInfoView } from "../../presenters/UserInfoPresenter";
 
-const UserInfo = () => {
+interface Props {
+  presenterGenerator: (view: UserInfoView) => UserInfoPresenter
+}
+
+const UserInfo = (props: Props) => {
   const [isFollower, setIsFollower] = useState(false);
   const [followeeCount, setFolloweeCount] = useState(-1);
   const [followerCount, setFollowerCount] = useState(-1);
@@ -21,11 +26,12 @@ const UserInfo = () => {
   }
 
   useEffect(() => {
-    setIsFollowerStatus(authToken!, currentUser!, displayedUser!);
-    setNumbFollowees(authToken!, displayedUser!);
-    setNumbFollowers(authToken!, displayedUser!);
+    setIsFollowerStatus();
+    setNumbFollowees();
+    setNumbFollowers();
   }, [displayedUser]);
 
+  /*
   const setIsFollowerStatus = async (
     authToken: AuthToken,
     currentUser: User,
@@ -44,8 +50,9 @@ const UserInfo = () => {
         `Failed to determine follower status because of exception: ${error}`
       );
     }
-  };
+  };*/
 
+  /*
   const getIsFollowerStatus = async (
     authToken: AuthToken,
     user: User,
@@ -54,7 +61,9 @@ const UserInfo = () => {
     // TODO: Replace with the result of calling server
     return FakeData.instance.isFollower();
   };
+  */
 
+  /*
   const setNumbFollowees = async (
     authToken: AuthToken,
     displayedUser: User
@@ -67,7 +76,9 @@ const UserInfo = () => {
       );
     }
   };
+  */
 
+  /*
   const getFolloweeCount = async (
     authToken: AuthToken,
     user: User
@@ -75,7 +86,9 @@ const UserInfo = () => {
     // TODO: Replace with the result of calling server
     return FakeData.instance.getFolloweeCount(user.alias);
   };
+  */
 
+  /*
   const setNumbFollowers = async (
     authToken: AuthToken,
     displayedUser: User
@@ -88,7 +101,9 @@ const UserInfo = () => {
       );
     }
   };
+  */
 
+  /*
   const getFollowerCount = async (
     authToken: AuthToken,
     user: User
@@ -96,12 +111,14 @@ const UserInfo = () => {
     // TODO: Replace with the result of calling server
     return FakeData.instance.getFollowerCount(user.alias);
   };
+  */
 
   const switchToLoggedInUser = (event: React.MouseEvent): void => {
     event.preventDefault();
     setDisplayedUser(currentUser!);
   };
 
+  /*
   const followDisplayedUser = async (
     event: React.MouseEvent
   ): Promise<void> => {
@@ -143,7 +160,9 @@ const UserInfo = () => {
 
     return [followerCount, followeeCount];
   };
+  */
 
+  /*
   const unfollowDisplayedUser = async (
     event: React.MouseEvent
   ): Promise<void> => {
@@ -188,6 +207,32 @@ const UserInfo = () => {
 
     return [followerCount, followeeCount];
   };
+  */
+
+  const listener: UserInfoView = {
+    setIsFollower: setIsFollower,
+    displayErrorMessage: displayErrorMessage,
+    setIsLoading: setIsLoading,
+    clearLastInfoMessage: clearLastInfoMessage,
+    displayInfoMessage: displayInfoMessage,
+    setFolloweeCount: setFolloweeCount,
+    setFollowerCount: setFollowerCount
+  }
+
+  const [presenter] = useState(props.presenterGenerator(listener))
+
+  const setIsFollowerStatus = () => {
+    presenter.setIsFollowerStatus(authToken!, currentUser!, displayedUser!)
+  }
+
+  const setNumbFollowees = () => {
+    presenter.setNumbFollowees(authToken!, displayedUser!)
+  }
+
+  const setNumbFollowers = () => {
+    presenter.setNumbFollowers(authToken!, displayedUser!)
+  }
+  
 
   return (
     <div className={isLoading ? "loading" : ""}>
@@ -236,7 +281,7 @@ const UserInfo = () => {
                       className="btn btn-md btn-secondary me-1"
                       type="submit"
                       style={{ width: "6em" }}
-                      onClick={(event) => unfollowDisplayedUser(event)}
+                      onClick={(event) => presenter.unfollowDisplayedUser(event, displayedUser, authToken)}
                     >
                       {isLoading ? (
                         <span
@@ -254,7 +299,7 @@ const UserInfo = () => {
                       className="btn btn-md btn-primary me-1"
                       type="submit"
                       style={{ width: "6em" }}
-                      onClick={(event) => followDisplayedUser(event)}
+                      onClick={(event) => presenter.followDisplayedUser(event, displayedUser, authToken)}
                     >
                       {isLoading ? (
                         <span
