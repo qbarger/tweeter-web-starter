@@ -7,11 +7,7 @@ import useUserInfo from "../userInfo/UserInfoHook";
 import { LogoutPresenter, LogoutView } from "../../presenters/LogoutPresenter";
 import { useState } from "react";
 
-interface Props {
-  presenterGenerator: (view: LogoutView) => LogoutPresenter
-}
-
-const AppNavbar = (props: Props) => {
+const AppNavbar = () => {
   const location = useLocation();
   const { authToken, clearUserInfo } = useUserInfo();
   const { displayInfoMessage, displayErrorMessage, clearLastInfoMessage } =
@@ -24,7 +20,7 @@ const AppNavbar = (props: Props) => {
     clearUserInfo: clearUserInfo,
   }
 
-  const [presenter] = useState(props.presenterGenerator(listener))
+  const presenter = new LogoutPresenter(listener)
 
   const logOut = async () => {
     await presenter.logOut(authToken)
