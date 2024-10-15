@@ -2,9 +2,9 @@ import { User, AuthToken } from "tweeter-shared";
 import UserService from "../model/service/UserService";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
+import { Presenter, View } from "./Presenter";
 
-export interface RegisterView {
-    displayErrorMessage: (message: string, bootstrapClasses?: string) => void
+export interface RegisterView extends View {
     updateUserInfo: (currentUser: User, displayedUser: User | null, authToken: AuthToken, remember: boolean) => void
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
     setImageUrl: React.Dispatch<React.SetStateAction<string>>
@@ -12,13 +12,12 @@ export interface RegisterView {
     setImageFileExtension: React.Dispatch<React.SetStateAction<string>>
 }
 
-export class RegisterPresenter {
-    private view: RegisterView
+export class RegisterPresenter extends Presenter<RegisterView> {
     private userService: UserService
     navigate = useNavigate()
 
     public constructor(view: RegisterView){
-        this.view = view
+        super(view)
         this.userService = new UserService()
     }
 

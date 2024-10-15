@@ -1,9 +1,10 @@
 import { AuthToken, User } from "tweeter-shared";
 import UserService from "../model/service/UserService";
+import { Presenter, View } from "./Presenter";
+import UserInfoProvider from "../components/userInfo/UserInfoProvider";
 
-export interface UserInfoView {
+export interface UserInfoView extends View {
     setIsFollower: React.Dispatch<React.SetStateAction<boolean>>
-    displayErrorMessage: (message: string, bootstrapClasses?: string) => void
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
     clearLastInfoMessage: () => void
     displayInfoMessage: (message: string, duration: number, bootstrapClasses?: string) => void
@@ -11,12 +12,11 @@ export interface UserInfoView {
     setFollowerCount: React.Dispatch<React.SetStateAction<number>>
 }
 
-export class UserInfoPresenter {
-    private view: UserInfoView
+export class UserInfoPresenter extends Presenter<UserInfoView> {
     private userService: UserService
 
     public constructor(view: UserInfoView){
-        this.view = view
+        super(view)
         this.userService = new UserService()
     }
 

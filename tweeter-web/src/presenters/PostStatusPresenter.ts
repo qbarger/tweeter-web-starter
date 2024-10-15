@@ -1,27 +1,20 @@
 import { AuthToken, Status, User } from "tweeter-shared";
 import StatusService from "../model/service/StatusService";
+import { MessageView, Presenter, View } from "./Presenter";
 
-export interface PostStatusView {
-    displayErrorMessage: (message: string, bootstrapClasses?: string) => void
-    displayInfoMessage: (message: string, duration: number, bootstrapClasses?: string) => void
-    clearLastInfoMessage: () => void
+export interface PostStatusView extends MessageView {
     setPost: React.Dispatch<React.SetStateAction<string>>
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export class PostStatusPresenter {
+export class PostStatusPresenter extends Presenter<PostStatusView> {
      private statusService: StatusService
      private _post: string = ""
      private _isLoading: boolean = false
-     private _view: PostStatusView
 
      public constructor(view: PostStatusView){
-        this.statusService = new StatusService()
-        this._view = view
-     }
-
-     protected get view(){
-        return this._view
+      super(view)
+      this.statusService = new StatusService()
      }
 
      protected set isLoading(value: boolean){
@@ -44,22 +37,22 @@ export class PostStatusPresenter {
         event.preventDefault();
     
         try {
-          this._view.setIsLoading(true)
-          this._view.displayInfoMessage("Posting status...", 0);
+          this.view.setIsLoading(true)
+          this.view.displayInfoMessage("Posting status...", 0);
     
           const status = new Status(post, currentUser!, Date.now());
     
           await this.statusService.postStatus(authToken!, status);
     
-          this._view.setPost("")
-          this._view.displayInfoMessage("Status posted!", 2000);
+          this.view.setPost("")
+          this.view.displayInfoMessage("Status posted!", 2000);
         } catch (error) {
-          this._view.displayErrorMessage(
+          this.view.displayErrorMessage(
             `Failed to post the status because of exception: ${error}`
           );
         } finally {
-          this._view.clearLastInfoMessage();
-          this._view.setIsLoading(false)
+          this.view.clearLastInfoMessage();
+          this.view.setIsLoading(false)
         }
       };
 
