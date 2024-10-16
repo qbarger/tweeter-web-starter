@@ -1,11 +1,12 @@
 import { User, AuthToken } from "tweeter-shared";
 import UserService from "../model/service/UserService";
-import { useNavigate } from "react-router-dom";
 import { Presenter, View } from "./Presenter";
+import { useNavigate } from "react-router-dom";
 
 export interface LoginView extends View {
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
     updateUserInfo: (currentUser: User, displayedUser: User | null, authToken: AuthToken, remember: boolean) => void
+    displayErrorMessage: (message: string) => void
 }
 
 export class LoginPresenter extends Presenter<LoginView> {

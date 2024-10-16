@@ -1,38 +1,14 @@
-import { AuthToken, Status } from "tweeter-shared"
-import { Presenter, View } from "./Presenter"
+import { Status } from "tweeter-shared"
+import { View } from "./Presenter"
+import { PagedItemPresenter, PagedItemView } from "./PagedItemPresenter"
+import StatusService from "../model/service/StatusService"
 
-export interface StatusItemView extends View {
+export interface StatusItemView extends PagedItemView<Status> {
     addItems: (statusItems: Status[]) => void 
 }
 
-export abstract class StatusItemPresenter extends Presenter<StatusItemView> {
-    private _hasMoreItems: boolean = true
-    private _lastItem: Status | null = null
-    
-    protected constructor(view: StatusItemView){
-        super(view)
-    } 
-
-    protected set hasMoreItems(value: boolean){
-        this._hasMoreItems = value
+export abstract class StatusItemPresenter extends PagedItemPresenter<Status, StatusService> {
+    protected createService(): StatusService {
+        return new StatusService()
     }
-
-    public get hasMoreItems(){
-        return this._hasMoreItems
-    }
-
-    protected set lastItem(value: Status | null){
-        this._lastItem = value
-    }
-
-    protected get lastItem(){
-        return this._lastItem
-    }
-
-    reset(){
-        this._lastItem = null
-        this._hasMoreItems = true
-    }
-
-    public abstract loadMoreItems(authToken: AuthToken, userAlias: string): void
 }

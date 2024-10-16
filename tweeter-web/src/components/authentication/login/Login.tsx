@@ -33,9 +33,9 @@ const Login = (props: Props) => {
   };
 
   const listener: LoginView = {
-    displayErrorMessage: displayErrorMessage,
     setIsLoading: setIsLoading,
-    updateUserInfo: updateUserInfo
+    updateUserInfo: updateUserInfo,
+    displayErrorMessage: displayErrorMessage
   }
 
   const [presenter] = useState(props.presenterGenerator(listener))

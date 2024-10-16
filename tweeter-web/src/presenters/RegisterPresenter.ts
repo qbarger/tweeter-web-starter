@@ -1,8 +1,8 @@
 import { User, AuthToken } from "tweeter-shared";
 import UserService from "../model/service/UserService";
-import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
 import { Presenter, View } from "./Presenter";
+import { useNavigate } from "react-router-dom";
 
 export interface RegisterView extends View {
     updateUserInfo: (currentUser: User, displayedUser: User | null, authToken: AuthToken, remember: boolean) => void
