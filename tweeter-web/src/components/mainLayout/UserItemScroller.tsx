@@ -41,8 +41,6 @@ const UserItemScroller = (props: Props) => {
     setItems([]);
     setNewItems([]);
     setChangedDisplayedUser(true);
-
-    presenter.reset()
   }
 
   const listener: UserItemView = {
@@ -54,7 +52,7 @@ const UserItemScroller = (props: Props) => {
   const [presenter] = useState(props.presenterGenerator(listener))
 
   const loadMoreItems = async () => {
-    presenter.loadMoreItems(authToken!, displayedUser!.alias)
+    presenter.loadMoreItems(authToken!, displayedUser!)
     setChangedDisplayedUser(false)
   }
 
