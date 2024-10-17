@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Status, User } from "tweeter-shared";
-import { UserItemView } from "../../presenters/UserItemPresenter";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
-import UserItem from "../userItem/UserItem";
 import { PagedItemPresenter, PagedItemView } from "../../presenters/PagedItemPresenter";
-import StatusService from "../../model/service/StatusService";
-import UserService from "../../model/service/UserService";
 
 interface Props <T, U> {
     presenterGenerator: (view: PagedItemView<T>) => PagedItemPresenter<T, U>
