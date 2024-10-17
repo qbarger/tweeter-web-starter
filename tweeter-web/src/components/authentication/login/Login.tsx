@@ -6,7 +6,9 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
-import { LoginPresenter, LoginView } from "../../../presenters/LoginPresenter";
+import { LoginPresenter } from "../../../presenters/LoginPresenter";
+import { AuthenticationView } from "../../../presenters/AuthenticationPresenter";
+import { LoginView } from "../../../presenters/Presenter";
 
 interface Props {
   originalUrl?: string;
@@ -17,7 +19,7 @@ const Login = (props: Props) => {
   const [alias, setAlias] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const { updateUserInfo } = useUserInfo();
   const { displayErrorMessage } = useToastListener();
@@ -35,13 +37,13 @@ const Login = (props: Props) => {
   const listener: LoginView = {
     setIsLoading: setIsLoading,
     updateUserInfo: updateUserInfo,
-    displayErrorMessage: displayErrorMessage
+    displayErrorMessage: displayErrorMessage,
   }
 
   const [presenter] = useState(props.presenterGenerator(listener))
 
   const doLogin = () => {
-    presenter.doLogin(alias, password, rememberMe, props.originalUrl!)
+    presenter.loadUser(alias, password, rememberMe, undefined, undefined, undefined, undefined, props.originalUrl)
   }
 
   const inputFieldGenerator = () => {

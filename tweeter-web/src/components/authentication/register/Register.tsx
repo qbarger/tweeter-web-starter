@@ -57,7 +57,7 @@ const Register = () => {
   const presenter = new RegisterPresenter(listener)
 
   const doRegister = () => {
-    presenter.loadUser(rememberMe, firstName, lastName, alias, password, imageBytes, imageFileExtension)
+    presenter.loadUser(alias, password, rememberMe, firstName, lastName, imageBytes, imageFileExtension)
   }
 
   const handleImageFile = (file: File | undefined) => {

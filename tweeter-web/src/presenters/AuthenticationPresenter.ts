@@ -1,12 +1,10 @@
 import { User, AuthToken } from "tweeter-shared";
-import { Presenter, View } from "./Presenter";
+import { LoginView, Presenter, View } from "./Presenter";
 import { useNavigate } from "react-router-dom";
 import { Buffer } from "buffer";
 import UserService from "../model/service/UserService";
 
-export interface AuthenticationView extends View {
-    updateUserInfo: (currentUser: User, displayedUser: User | null, authToken: AuthToken, remember: boolean) => void
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+export interface AuthenticationView extends LoginView {
     setImageUrl: React.Dispatch<React.SetStateAction<string>>
     setImageBytes: React.Dispatch<React.SetStateAction<Uint8Array>>
     setImageFileExtension: React.Dispatch<React.SetStateAction<string>>
@@ -22,28 +20,36 @@ export abstract class AuthenticationPresenter extends Presenter<AuthenticationVi
     }
 
     public async loadUser(
-        rememberMe: boolean, 
-        firstName: string, 
-        lastName: string, 
         alias: string, 
-        password: string, 
-        imageBytes: Uint8Array, 
-        imageFileExtension: string
+        password: string,
+        rememberMe: boolean, 
+        firstName?: string | undefined, 
+        lastName?: string,  
+        imageBytes?: Uint8Array, 
+        imageFileExtension?: string,
+        originalUrl?: string
     ){
         this.doFailureReportingOperation(async () => {
             this.view.setIsLoading(true);
 
             let [user, authToken] = await this.getUser(
-                firstName,
-                lastName,
-                alias,
+                alias, 
                 password,
-                imageBytes,
-                imageFileExtension
+                rememberMe, 
+                firstName, 
+                lastName,  
+                imageBytes, 
+                imageFileExtension,
+                originalUrl
             );
 
             this.view.updateUserInfo(user, user, authToken, rememberMe);
-            this.navigate("/");
+
+            if (originalUrl) {
+                this.navigate(originalUrl);
+              } else {
+                this.navigate("/");
+              }
         }, this.getAction())
     }
 
@@ -84,5 +90,13 @@ export abstract class AuthenticationPresenter extends Presenter<AuthenticationVi
     };
 
     protected abstract getAction(): string
-    protected abstract getUser(firstName: string, lastName: string, alias: string, password: string, imageBytes: Uint8Array, imageFileExtension: string): Promise<[User, AuthToken]>
+    protected abstract getUser(
+        alias: string, 
+        password: string,
+        rememberMe: boolean, 
+        firstName?: string | undefined, 
+        lastName?: string,  
+        imageBytes?: Uint8Array, 
+        imageFileExtension?: string,
+        originalUrl?: string): Promise<[User, AuthToken]>
 }

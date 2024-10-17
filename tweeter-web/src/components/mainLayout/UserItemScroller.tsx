@@ -41,6 +41,7 @@ const UserItemScroller = (props: Props) => {
     setItems([]);
     setNewItems([]);
     setChangedDisplayedUser(true);
+    presenter.reset()
   }
 
   const listener: UserItemView = {

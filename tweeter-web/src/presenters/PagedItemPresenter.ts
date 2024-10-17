@@ -39,6 +39,11 @@ export abstract class PagedItemPresenter<T, U> extends Presenter<PagedItemView<T
         this._hasMoreItems = value
     }
 
+    reset(){
+        this._lastItem = null
+        this._hasMoreItems = true
+    }
+
     public async loadMoreItems(authToken: AuthToken, user: User) {
         this.doFailureReportingOperation(async () => {
           let [newItems, hasMore] = await this.getMoreItems(
