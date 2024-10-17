@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { User } from "tweeter-shared";
+import { Status, User } from "tweeter-shared";
 import { UserItemView } from "../../presenters/UserItemPresenter";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
 import UserItem from "../userItem/UserItem";
 import { PagedItemPresenter, PagedItemView } from "../../presenters/PagedItemPresenter";
+import StatusService from "../../model/service/StatusService";
+import UserService from "../../model/service/UserService";
 
-interface Props <T, U extends any> {
+interface Props <T, U> {
     presenterGenerator: (view: PagedItemView<T>) => PagedItemPresenter<T, U>
-    itemComponentGenerator: (item: U) => JSX.Element
+    itemComponentGenerator: (item: T) => JSX.Element
 }
 
-const ItemScroller = <T, U extends any> (props: Props<T, U>) => {
-    const { displayErrorMessage } = useToastListener();
+const ItemScroller = <T, U> (props: Props<T, U>) => {
+  const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<T[]>([]);
   const [newItems, setNewItems] = useState<T[]>([]);
   const [changedDisplayedUser, setChangedDisplayedUser] = useState(true);
@@ -73,10 +75,11 @@ const ItemScroller = <T, U extends any> (props: Props<T, U>) => {
             key={index}
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
-            <{props.itemComponentGenerator(item)} />
+            {props.itemComponentGenerator(item)}
           </div>
         ))}
       </InfiniteScroll>
     </div>
   );
 }
+export default ItemScroller
