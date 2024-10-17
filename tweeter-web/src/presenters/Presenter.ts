@@ -9,11 +9,6 @@ export interface MessageView extends View {
     clearLastInfoMessage: () => void
 }
 
-export interface LoginView extends View {
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-    updateUserInfo: (currentUser: User, displayedUser: User | null, authToken: AuthToken, remember: boolean) => void
-}
-
 export class Presenter<V extends View> {
     private _view: V
 

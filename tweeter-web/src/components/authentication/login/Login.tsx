@@ -8,11 +8,10 @@ import AuthenticationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
 import { LoginPresenter } from "../../../presenters/LoginPresenter";
 import { AuthenticationView } from "../../../presenters/AuthenticationPresenter";
-import { LoginView } from "../../../presenters/Presenter";
 
 interface Props {
   originalUrl?: string;
-  presenterGenerator: (view: LoginView) => LoginPresenter
+  presenterGenerator: (view: AuthenticationView) => LoginPresenter
 }
 
 const Login = (props: Props) => {
@@ -34,7 +33,7 @@ const Login = (props: Props) => {
     }
   };
 
-  const listener: LoginView = {
+  const listener: AuthenticationView = {
     setIsLoading: setIsLoading,
     updateUserInfo: updateUserInfo,
     displayErrorMessage: displayErrorMessage,
