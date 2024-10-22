@@ -45,40 +45,62 @@ const App = () => {
 };
 
 const AuthenticatedRoutes = () => {
-
   return (
     <Routes>
       <Route element={<MainLayout />}>
         <Route index element={<Navigate to="/feed" />} />
-        <Route path="feed" element={
-          <ItemScroller 
-            key={1} 
-            presenterGenerator={(view: PagedItemView<Status>) => new FeedPresenter(view)} 
-            itemComponentGenerator={(item: Status) => <StatusItem status = {item} />} />
-          } />
-        <Route path="story" element={
-          <ItemScroller 
-            key={2}  
-            presenterGenerator={(view: PagedItemView<Status>) => new StoryPresenter(view)} 
-            itemComponentGenerator={(item: Status) => <StatusItem status={item} />} />
-          } />
+        <Route
+          path="feed"
+          element={
+            <ItemScroller
+              key={1}
+              presenterGenerator={(view: PagedItemView<Status>) =>
+                new FeedPresenter(view)
+              }
+              itemComponentGenerator={(item: Status) => (
+                <StatusItem status={item} />
+              )}
+            />
+          }
+        />
+        <Route
+          path="story"
+          element={
+            <ItemScroller
+              key={2}
+              presenterGenerator={(view: PagedItemView<Status>) =>
+                new StoryPresenter(view)
+              }
+              itemComponentGenerator={(item: Status) => (
+                <StatusItem status={item} />
+              )}
+            />
+          }
+        />
         <Route
           path="followees"
           element={
             <ItemScroller
               key={1}
-                presenterGenerator={(view: PagedItemView<User>) => new FolloweePresenter(view)}
-                itemComponentGenerator={(item: User) => <UserItem value={item} />} />
-          } />
+              presenterGenerator={(view: PagedItemView<User>) =>
+                new FolloweePresenter(view)
+              }
+              itemComponentGenerator={(item: User) => <UserItem value={item} />}
+            />
+          }
+        />
         <Route
           path="followers"
           element={
             <ItemScroller
-              key={2} 
-                presenterGenerator={(view: PagedItemView<User>) => new FollowerPresenter(view)}
-                itemComponentGenerator={(item: User) => <UserItem value={item} />} />
+              key={2}
+              presenterGenerator={(view: PagedItemView<User>) =>
+                new FollowerPresenter(view)
+              }
+              itemComponentGenerator={(item: User) => <UserItem value={item} />}
+            />
           }
-          />
+        />
         <Route path="logout" element={<Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/feed" />} />
       </Route>
@@ -91,9 +113,28 @@ const UnauthenticatedRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login presenterGenerator={(view: AuthenticationView) => new LoginPresenter(view)} />} />
+      <Route
+        path="/login"
+        element={
+          <Login
+            presenterGenerator={(view: AuthenticationView) =>
+              new LoginPresenter(view)
+            }
+          />
+        }
+      />
       <Route path="/register" element={<Register />} />
-      <Route path="*" element={<Login presenterGenerator={(view: AuthenticationView) => new LoginPresenter(view)} originalUrl={location.pathname} />} />
+      <Route
+        path="*"
+        element={
+          <Login
+            presenterGenerator={(view: AuthenticationView) =>
+              new LoginPresenter(view)
+            }
+            originalUrl={location.pathname}
+          />
+        }
+      />
     </Routes>
   );
 };

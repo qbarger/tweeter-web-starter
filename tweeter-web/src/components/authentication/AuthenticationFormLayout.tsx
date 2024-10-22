@@ -41,23 +41,53 @@ const AuthenticationFormLayout = (props: Props) => {
 
             <div className="text-center mb-3">
               <>
-                <OAuth displayInfoMessageWithDarkBackground={displayInfoMessageWithDarkBackground} message="Google registration is not implemented." select="Google"/>
+                <OAuth
+                  displayInfoMessageWithDarkBackground={
+                    displayInfoMessageWithDarkBackground
+                  }
+                  message="Google registration is not implemented."
+                  select="Google"
+                />
               </>
 
               <>
-                <OAuth displayInfoMessageWithDarkBackground={displayInfoMessageWithDarkBackground} message="Facebook registration is not implemented." select="Facebook"/>
+                <OAuth
+                  displayInfoMessageWithDarkBackground={
+                    displayInfoMessageWithDarkBackground
+                  }
+                  message="Facebook registration is not implemented."
+                  select="Facebook"
+                />
               </>
 
               <>
-                <OAuth displayInfoMessageWithDarkBackground={displayInfoMessageWithDarkBackground} message="Twitter registration is not implemented." select="Twitter"/>
-              </>
-              
-              <>
-                <OAuth displayInfoMessageWithDarkBackground={displayInfoMessageWithDarkBackground} message="LinkedIn registration is not implemented." select="LinkedIn"/>
+                <OAuth
+                  displayInfoMessageWithDarkBackground={
+                    displayInfoMessageWithDarkBackground
+                  }
+                  message="Twitter registration is not implemented."
+                  select="Twitter"
+                />
               </>
 
               <>
-                <OAuth displayInfoMessageWithDarkBackground={displayInfoMessageWithDarkBackground} message="Github registration is not implemented." select="GitHub"/>
+                <OAuth
+                  displayInfoMessageWithDarkBackground={
+                    displayInfoMessageWithDarkBackground
+                  }
+                  message="LinkedIn registration is not implemented."
+                  select="LinkedIn"
+                />
+              </>
+
+              <>
+                <OAuth
+                  displayInfoMessageWithDarkBackground={
+                    displayInfoMessageWithDarkBackground
+                  }
+                  message="Github registration is not implemented."
+                  select="GitHub"
+                />
               </>
             </div>
 

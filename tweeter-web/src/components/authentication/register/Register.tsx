@@ -6,7 +6,10 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
-import { RegisterPresenter, RegisterView } from "../../../presenters/RegisterPresenter";
+import {
+  RegisterPresenter,
+  RegisterView,
+} from "../../../presenters/RegisterPresenter";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -50,18 +53,26 @@ const Register = () => {
     setIsLoading: setIsLoading,
     setImageBytes: setImageBytes,
     setImageUrl: setImageUrl,
-    setImageFileExtension: setImageFileExtension
-  }
+    setImageFileExtension: setImageFileExtension,
+  };
 
-  const presenter = new RegisterPresenter(listener)
+  const presenter = new RegisterPresenter(listener);
 
   const doRegister = () => {
-    presenter.loadUser(alias, password, rememberMe, firstName, lastName, imageBytes, imageFileExtension)
-  }
+    presenter.loadUser(
+      alias,
+      password,
+      rememberMe,
+      firstName,
+      lastName,
+      imageBytes,
+      imageFileExtension
+    );
+  };
 
   const handleImageFile = (file: File | undefined) => {
-    presenter.handleImageFile(file)
-  }
+    presenter.handleImageFile(file);
+  };
 
   const inputFieldGenerator = () => {
     return (
@@ -91,7 +102,11 @@ const Register = () => {
           <label htmlFor="lastNameInput">Last Name</label>
         </div>
         <>
-          <AuthenticationFields onEnter={registerOnEnter} setPassword={setPassword} setAlias={setAlias}/>
+          <AuthenticationFields
+            onEnter={registerOnEnter}
+            setPassword={setPassword}
+            setAlias={setAlias}
+          />
         </>
         <div className="form-floating mb-3">
           <input

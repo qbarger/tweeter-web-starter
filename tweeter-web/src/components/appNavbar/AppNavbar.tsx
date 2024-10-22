@@ -11,19 +11,19 @@ const AppNavbar = () => {
   const { authToken, clearUserInfo } = useUserInfo();
   const { displayInfoMessage, displayErrorMessage, clearLastInfoMessage } =
     useToastListener();
-  
+
   const listener: LogoutView = {
     displayErrorMessage: displayErrorMessage,
     displayInfoMessage: displayInfoMessage,
     clearLastInfoMessage: clearLastInfoMessage,
     clearUserInfo: clearUserInfo,
-  }
+  };
 
-  const presenter = new LogoutPresenter(listener)
+  const presenter = new LogoutPresenter(listener);
 
   const logOut = async () => {
-    await presenter.logOut(authToken)
-  }
+    await presenter.logOut(authToken);
+  };
 
   return (
     <Navbar

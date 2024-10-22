@@ -2,7 +2,10 @@ import "./PostStatus.css";
 import { useState } from "react";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
-import { PostStatusPresenter, PostStatusView } from "../../presenters/PostStatusPresenter";
+import {
+  PostStatusPresenter,
+  PostStatusView,
+} from "../../presenters/PostStatusPresenter";
 
 const PostStatus = () => {
   const { displayErrorMessage, displayInfoMessage, clearLastInfoMessage } =
@@ -17,14 +20,14 @@ const PostStatus = () => {
     displayInfoMessage: displayInfoMessage,
     clearLastInfoMessage: clearLastInfoMessage,
     setPost: setPost,
-    setIsLoading: setIsLoading
-  }
+    setIsLoading: setIsLoading,
+  };
 
-  const presenter = new PostStatusPresenter(listener)
+  const presenter = new PostStatusPresenter(listener);
 
   const submitPost = (event: React.MouseEvent) => {
-    presenter.submitPost(event, post, currentUser, authToken)
-  }
+    presenter.submitPost(event, post, currentUser, authToken);
+  };
 
   const clearPost = (event: React.MouseEvent) => {
     event.preventDefault();

@@ -12,7 +12,7 @@ const Post = (props: Props) => {
   useUserInfo();
   useToastListener();
 
-  const navigateToUser = useUserNavigation()
+  const navigateToUser = useUserNavigation();
 
   return (
     <>

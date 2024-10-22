@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
-import { PagedItemPresenter, PagedItemView } from "../../presenters/PagedItemPresenter";
+import {
+  PagedItemPresenter,
+  PagedItemView,
+} from "../../presenters/PagedItemPresenter";
 
-interface Props <T, U> {
-    presenterGenerator: (view: PagedItemView<T>) => PagedItemPresenter<T, U>
-    itemComponentGenerator: (item: T) => JSX.Element
+interface Props<T, U> {
+  presenterGenerator: (view: PagedItemView<T>) => PagedItemPresenter<T, U>;
+  itemComponentGenerator: (item: T) => JSX.Element;
 }
 
-const ItemScroller = <T, U> (props: Props<T, U>) => {
+const ItemScroller = <T, U>(props: Props<T, U>) => {
   const { displayErrorMessage } = useToastListener();
   const [items, setItems] = useState<T[]>([]);
   const [newItems, setNewItems] = useState<T[]>([]);
@@ -24,37 +27,36 @@ const ItemScroller = <T, U> (props: Props<T, U>) => {
 
   // Load initial items whenever the displayed user changes. Done in a separate useEffect hook so the changes from reset will be visible.
   useEffect(() => {
-    if(changedDisplayedUser) {
+    if (changedDisplayedUser) {
       loadMoreItems();
     }
   }, [changedDisplayedUser]);
 
   // Add new items whenever there are new items to add
   useEffect(() => {
-    if(newItems) {
+    if (newItems) {
       setItems([...items, ...newItems]);
     }
-  }, [newItems])
+  }, [newItems]);
 
   const reset = async () => {
     setItems([]);
     setNewItems([]);
     setChangedDisplayedUser(true);
-    presenter.reset() 
-  }
+    presenter.reset();
+  };
 
   const listener: PagedItemView<T> = {
-    addItems: (newItems: T[]) =>
-      setNewItems(newItems),
-    displayErrorMessage: displayErrorMessage
-  }
+    addItems: (newItems: T[]) => setNewItems(newItems),
+    displayErrorMessage: displayErrorMessage,
+  };
 
-  const [presenter] = useState(props.presenterGenerator(listener))
+  const [presenter] = useState(props.presenterGenerator(listener));
 
   const loadMoreItems = async () => {
-    presenter.loadMoreItems(authToken!, displayedUser!)
-    setChangedDisplayedUser(false)
-  }
+    presenter.loadMoreItems(authToken!, displayedUser!);
+    setChangedDisplayedUser(false);
+  };
 
   return (
     <div className="container px-0 overflow-visible vh-100">
@@ -76,5 +78,5 @@ const ItemScroller = <T, U> (props: Props<T, U>) => {
       </InfiniteScroll>
     </div>
   );
-}
-export default ItemScroller
+};
+export default ItemScroller;

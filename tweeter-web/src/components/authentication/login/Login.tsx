@@ -11,7 +11,7 @@ import { AuthenticationView } from "../../../presenters/AuthenticationPresenter"
 
 interface Props {
   originalUrl?: string;
-  presenterGenerator: (view: AuthenticationView) => LoginPresenter
+  presenterGenerator: (view: AuthenticationView) => LoginPresenter;
 }
 
 const Login = (props: Props) => {
@@ -37,18 +37,31 @@ const Login = (props: Props) => {
     setIsLoading: setIsLoading,
     updateUserInfo: updateUserInfo,
     displayErrorMessage: displayErrorMessage,
-  }
+  };
 
-  const [presenter] = useState(props.presenterGenerator(listener))
+  const [presenter] = useState(props.presenterGenerator(listener));
 
   const doLogin = () => {
-    presenter.loadUser(alias, password, rememberMe, undefined, undefined, undefined, undefined, props.originalUrl)
-  }
+    presenter.loadUser(
+      alias,
+      password,
+      rememberMe,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      props.originalUrl
+    );
+  };
 
   const inputFieldGenerator = () => {
     return (
       <>
-        <AuthenticationFields onEnter = {loginOnEnter} setPassword={setPassword} setAlias={setAlias}/>
+        <AuthenticationFields
+          onEnter={loginOnEnter}
+          setPassword={setPassword}
+          setAlias={setAlias}
+        />
       </>
     );
   };

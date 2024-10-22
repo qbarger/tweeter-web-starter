@@ -3,62 +3,70 @@ import { Presenter, View } from "./Presenter";
 import { useNavigate } from "react-router-dom";
 import UserService from "../model/service/UserService";
 
-export interface AuthenticationView extends View { 
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  updateUserInfo: (currentUser: User, displayedUser: User | null, authToken: AuthToken, remember: boolean) => void
+export interface AuthenticationView extends View {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  updateUserInfo: (
+    currentUser: User,
+    displayedUser: User | null,
+    authToken: AuthToken,
+    remember: boolean
+  ) => void;
 }
 
-export abstract class AuthenticationPresenter<V extends AuthenticationView> extends Presenter<V> {
-    navigate = useNavigate()
-    protected service: UserService
+export abstract class AuthenticationPresenter<
+  V extends AuthenticationView
+> extends Presenter<V> {
+  navigate = useNavigate();
+  protected service: UserService;
 
-    public constructor(view: V){
-        super(view)
-        this.service = new UserService()
-    }
+  public constructor(view: V) {
+    super(view);
+    this.service = new UserService();
+  }
 
-    public async loadUser(
-        alias: string, 
-        password: string,
-        rememberMe: boolean, 
-        firstName?: string | undefined, 
-        lastName?: string,  
-        imageBytes?: Uint8Array, 
-        imageFileExtension?: string,
-        originalUrl?: string
-    ){
-        this.doFailureReportingOperation(async () => {
-            this.view.setIsLoading(true);
+  public async loadUser(
+    alias: string,
+    password: string,
+    rememberMe: boolean,
+    firstName?: string | undefined,
+    lastName?: string,
+    imageBytes?: Uint8Array,
+    imageFileExtension?: string,
+    originalUrl?: string
+  ) {
+    this.doFailureReportingOperation(async () => {
+      this.view.setIsLoading(true);
 
-            let [user, authToken] = await this.getUser(
-                alias, 
-                password,
-                rememberMe, 
-                firstName, 
-                lastName,  
-                imageBytes, 
-                imageFileExtension,
-                originalUrl
-            );
+      let [user, authToken] = await this.getUser(
+        alias,
+        password,
+        rememberMe,
+        firstName,
+        lastName,
+        imageBytes,
+        imageFileExtension,
+        originalUrl
+      );
 
-            this.view.updateUserInfo(user, user, authToken, rememberMe);
+      this.view.updateUserInfo(user, user, authToken, rememberMe);
 
-            if (originalUrl) {
-                this.navigate(originalUrl);
-              } else {
-                this.navigate("/");
-              }
-        }, this.getAction())
-    }
+      if (originalUrl) {
+        this.navigate(originalUrl);
+      } else {
+        this.navigate("/");
+      }
+    }, this.getAction());
+  }
 
-    protected abstract getAction(): string
-    protected abstract getUser(
-        alias: string, 
-        password: string,
-        rememberMe: boolean, 
-        firstName?: string | undefined, 
-        lastName?: string,  
-        imageBytes?: Uint8Array, 
-        imageFileExtension?: string,
-        originalUrl?: string): Promise<[User, AuthToken]>
+  protected abstract getAction(): string;
+  protected abstract getUser(
+    alias: string,
+    password: string,
+    rememberMe: boolean,
+    firstName?: string | undefined,
+    lastName?: string,
+    imageBytes?: Uint8Array,
+    imageFileExtension?: string,
+    originalUrl?: string
+  ): Promise<[User, AuthToken]>;
 }

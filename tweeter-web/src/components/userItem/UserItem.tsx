@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import useUserNavigation from "../userInfo/UserNavigation";
 
 interface Props {
-  value: User; 
+  value: User;
 }
 
 const UserItem = (props: Props) => {
-  const navigateToUser = useUserNavigation()
+  const navigateToUser = useUserNavigation();
 
   return (
     <div className="col bg-light mx-0 px-0">
