@@ -30,8 +30,7 @@ const PostStatus = () => {
   };
 
   const clearPost = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setPost("");
+    presenter.clearPost(event);
   };
 
   const checkButtonStatus: () => boolean = () => {

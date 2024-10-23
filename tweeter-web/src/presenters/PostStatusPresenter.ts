@@ -8,13 +8,20 @@ export interface PostStatusView extends MessageView {
 }
 
 export class PostStatusPresenter extends Presenter<PostStatusView> {
-  private statusService: StatusService;
+  private _statusService: StatusService | null = null;
   private _post: string = "";
   private _isLoading: boolean = false;
 
   public constructor(view: PostStatusView) {
     super(view);
-    this.statusService = new StatusService();
+    //this.statusService = new StatusService();
+  }
+
+  public get statusService() {
+    if (this._statusService == null) {
+      this._statusService = new StatusService();
+    }
+    return this._statusService;
   }
 
   protected set isLoading(value: boolean) {
@@ -59,5 +66,10 @@ export class PostStatusPresenter extends Presenter<PostStatusView> {
       this.view.clearLastInfoMessage();
       this.view.setIsLoading(false);
     }
+  }
+
+  public clearPost(event: React.MouseEvent) {
+    event.preventDefault();
+    this.view.setPost("");
   }
 }
