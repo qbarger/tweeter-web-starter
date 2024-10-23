@@ -5,15 +5,10 @@ import {
 } from "./AuthenticationPresenter";
 
 export class LoginPresenter extends AuthenticationPresenter<AuthenticationView> {
-  protected getUser(
+  public getUser(
     alias: string,
     password: string,
-    rememberMe?: boolean | undefined,
-    firstName?: string | undefined,
-    lastName?: string,
-    imageBytes?: Uint8Array,
-    imageFileExtension?: string,
-    originalUrl?: string
+    rememberMe: boolean | undefined
   ): Promise<[User, AuthToken]> {
     return this.service.login(alias, password);
   }

@@ -7,11 +7,14 @@ import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
 import { LoginPresenter } from "../../../presenters/LoginPresenter";
-import { AuthenticationView } from "../../../presenters/AuthenticationPresenter";
+import {
+  AuthenticationPresenter,
+  AuthenticationView,
+} from "../../../presenters/AuthenticationPresenter";
 
 interface Props {
   originalUrl?: string;
-  presenterGenerator: (view: AuthenticationView) => LoginPresenter;
+  presenter?: LoginPresenter;
 }
 
 const Login = (props: Props) => {
@@ -39,19 +42,10 @@ const Login = (props: Props) => {
     displayErrorMessage: displayErrorMessage,
   };
 
-  const [presenter] = useState(props.presenterGenerator(listener));
+  const [presenter] = useState(props.presenter ?? new LoginPresenter(listener));
 
   const doLogin = () => {
-    presenter.loadUser(
-      alias,
-      password,
-      rememberMe,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      props.originalUrl
-    );
+    presenter.loadUser(alias, password, rememberMe, props.originalUrl);
   };
 
   const inputFieldGenerator = () => {

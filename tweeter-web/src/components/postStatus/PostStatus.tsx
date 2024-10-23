@@ -23,7 +23,7 @@ const PostStatus = () => {
     setIsLoading: setIsLoading,
   };
 
-  const presenter = new PostStatusPresenter(listener);
+  const [presenter] = useState(new PostStatusPresenter(listener));
 
   const submitPost = (event: React.MouseEvent) => {
     presenter.submitPost(event, post, currentUser, authToken);

@@ -4,7 +4,7 @@ import {
   UserNavigationPresenter,
   UserNavigationView,
 } from "../../presenters/UserNavigationPresenter";
-import React from "react";
+import React, { useState } from "react";
 
 const useUserNavigation = () => {
   const { displayErrorMessage } = useToastListener();
@@ -15,7 +15,7 @@ const useUserNavigation = () => {
     setDisplayedUser: setDisplayedUser,
   };
 
-  const presenter = new UserNavigationPresenter(listener);
+  const [presenter] = useState(new UserNavigationPresenter(listener));
 
   const navigateToUser = async (event: React.MouseEvent) => {
     await presenter.navigateToUser(event, authToken, currentUser);

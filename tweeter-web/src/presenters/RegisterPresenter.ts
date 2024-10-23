@@ -16,10 +16,10 @@ export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
     super(view);
   }
 
-  protected getUser(
+  public getUser(
     alias: string,
     password: string,
-    rememberMe?: boolean | undefined,
+    rememberMe: boolean | undefined,
     firstName?: string | undefined,
     lastName?: string,
     imageBytes?: Uint8Array,

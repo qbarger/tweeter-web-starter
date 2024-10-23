@@ -56,13 +56,14 @@ const Register = () => {
     setImageFileExtension: setImageFileExtension,
   };
 
-  const presenter = new RegisterPresenter(listener);
+  const [presenter] = useState(new RegisterPresenter(listener));
 
   const doRegister = () => {
     presenter.loadUser(
       alias,
       password,
       rememberMe,
+      undefined,
       firstName,
       lastName,
       imageBytes,

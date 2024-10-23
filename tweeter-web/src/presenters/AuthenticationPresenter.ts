@@ -28,11 +28,11 @@ export abstract class AuthenticationPresenter<
     alias: string,
     password: string,
     rememberMe: boolean,
+    originalUrl?: string,
     firstName?: string | undefined,
     lastName?: string,
     imageBytes?: Uint8Array,
-    imageFileExtension?: string,
-    originalUrl?: string
+    imageFileExtension?: string
   ) {
     this.doFailureReportingOperation(async () => {
       this.view.setIsLoading(true);

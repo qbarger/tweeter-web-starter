@@ -45,7 +45,7 @@ const UserInfo = () => {
     setFollowerCount: setFollowerCount,
   };
 
-  const presenter = new UserInfoPresenter(listener);
+  const [presenter] = useState(new UserInfoPresenter(listener));
 
   const setIsFollowerStatus = () => {
     presenter.setIsFollowerStatus(authToken!, currentUser!, displayedUser!);

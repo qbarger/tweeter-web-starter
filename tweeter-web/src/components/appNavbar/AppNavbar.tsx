@@ -5,6 +5,7 @@ import Image from "react-bootstrap/Image";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
 import { LogoutPresenter, LogoutView } from "../../presenters/LogoutPresenter";
+import { useState } from "react";
 
 const AppNavbar = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const AppNavbar = () => {
     clearUserInfo: clearUserInfo,
   };
 
-  const presenter = new LogoutPresenter(listener);
+  const [presenter] = useState(new LogoutPresenter(listener));
 
   const logOut = async () => {
     await presenter.logOut(authToken);
