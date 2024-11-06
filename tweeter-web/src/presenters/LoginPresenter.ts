@@ -10,6 +10,7 @@ export class LoginPresenter extends AuthenticationPresenter<AuthenticationView> 
     password: string,
     rememberMe: boolean | undefined
   ): Promise<[User, AuthToken]> {
+    console.log("getUser being called");
     return this.service.login(alias, password);
   }
 

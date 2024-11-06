@@ -49,6 +49,13 @@ export class PostStatusPresenter extends Presenter<PostStatusView> {
     event.preventDefault();
 
     try {
+      console.log(
+        "submitPost being called with: ",
+        event,
+        post,
+        currentUser,
+        authToken
+      );
       this.view.setIsLoading(true);
       this.view.displayInfoMessage("Posting status...", 0);
 

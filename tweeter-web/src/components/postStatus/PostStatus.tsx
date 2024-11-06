@@ -15,6 +15,10 @@ const PostStatus = () => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const checkButtonStatus: () => boolean = () => {
+    return !post.trim() || !authToken || !currentUser;
+  };
+
   const listener: PostStatusView = {
     displayErrorMessage: displayErrorMessage,
     displayInfoMessage: displayInfoMessage,
@@ -33,10 +37,6 @@ const PostStatus = () => {
     presenter.clearPost(event);
   };
 
-  const checkButtonStatus: () => boolean = () => {
-    return !post.trim() || !authToken || !currentUser;
-  };
-
   return (
     <div className={isLoading ? "loading" : ""}>
       <form>
@@ -44,6 +44,7 @@ const PostStatus = () => {
           <textarea
             className="form-control"
             id="postStatusTextArea"
+            aria-label="postStatusText"
             rows={10}
             placeholder="What's on your mind?"
             value={post}
@@ -55,6 +56,7 @@ const PostStatus = () => {
         <div className="form-group">
           <button
             id="postStatusButton"
+            aria-label="postStatus"
             className="btn btn-md btn-primary me-1"
             type="button"
             disabled={checkButtonStatus()}
@@ -73,6 +75,7 @@ const PostStatus = () => {
           </button>
           <button
             id="clearStatusButton"
+            aria-label="clearStatus"
             className="btn btn-md btn-secondary"
             type="button"
             disabled={checkButtonStatus()}

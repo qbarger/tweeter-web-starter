@@ -34,6 +34,13 @@ export abstract class AuthenticationPresenter<
     imageBytes?: Uint8Array,
     imageFileExtension?: string
   ) {
+    console.log(
+      "loadUser being called by: ",
+      alias,
+      password,
+      "anything",
+      originalUrl
+    );
     this.doFailureReportingOperation(async () => {
       this.view.setIsLoading(true);
 
@@ -59,7 +66,7 @@ export abstract class AuthenticationPresenter<
   }
 
   protected abstract getAction(): string;
-  protected abstract getUser(
+  public abstract getUser(
     alias: string,
     password: string,
     rememberMe: boolean,

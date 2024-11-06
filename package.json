@@ -11,5 +11,12 @@
     "react-router-dom": "^6.27.0",
     "rimraf": "^5.0.5",
     "vite-plugin-dts": "^3.7.3"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.25.9",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2"
   }
 }
