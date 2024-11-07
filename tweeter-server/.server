@@ -1,0 +1,6 @@
+BUCKET='qb-cs340tweeterbucket'
+LAMBDA_ROLE='arn:aws:iam::211125463401:role/cs340-milestone3-role'
+EDIT_LAMBDALIST='
+tweeterGetFollowees | lambda/follow/GetFolloweesLambda.handler
+'
+LAMBDALAYER_ARN='arn:aws:lambda:us-east-1:211125463401:layer:layerForScripts:3'
