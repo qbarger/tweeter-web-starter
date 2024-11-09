@@ -29,13 +29,18 @@ export class StatusService {
   }
 
   public async loadMoreStoryItems(
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: Status | null
+    request: PagedStatusItemRequest
   ): Promise<[Status[], boolean]> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+    try {
+      const [feedItems, hasMore] = await this.serverFacade.getMoreFeedItems(
+        request
+      );
+      return [feedItems, hasMore];
+    } catch (error) {
+      console.error("Failed to fetch feed items:", error);
+      throw error;
+    }
   }
 
   public async postStatus(

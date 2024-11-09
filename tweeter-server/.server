@@ -6,4 +6,4 @@ tweeterGetFollowers | lambda/follow/GetFollowersLambda.handler
 tweeterGetFeedItems | lambda/status/GetMoreFeedItems.handler
 tweeterGetStoryItems | lambda/status/GetMoreStoryItems.handler
 '
-LAMBDALAYER_ARN='arn:aws:lambda:us-east-1:211125463401:layer:layerForScripts:7'
+LAMBDALAYER_ARN='arn:aws:lambda:us-east-1:211125463401:layer:layerForScripts:9'

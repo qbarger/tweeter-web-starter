@@ -1,21 +1,29 @@
-import { AuthToken, Status, User } from "tweeter-shared";
-import { StatusItemPresenter } from "./StatusItemPresenter";
+import {
+  AuthToken,
+  PagedStatusItemRequest,
+  Status,
+  User,
+} from "tweeter-shared";
 import { PAGE_SIZE } from "./PagedItemPresenter";
+import { StatusItemPresenter } from "./StatusItemPresenter";
 
 export class StoryPresenter extends StatusItemPresenter {
-  protected getMoreItems(
+  protected async getMoreItems(
     authToken: AuthToken,
     user: User
   ): Promise<[Status[], boolean]> {
-    return this.service.loadMoreStoryItems(
-      authToken,
-      user,
-      PAGE_SIZE,
-      this.lastItem
-    );
+    const request: PagedStatusItemRequest = {
+      token: authToken.token,
+      userAlias: user.alias,
+      pageSize: PAGE_SIZE,
+      lastItem: this.lastItem?.dto ?? null,
+    };
+    const response = await this.service.loadMoreStoryItems(request);
+    return response;
   }
+
   protected getItemDescription(): string {
-    return "load story items";
+    return "load feed items";
   }
 }
 export default StoryPresenter;
