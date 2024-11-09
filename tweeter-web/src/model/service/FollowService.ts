@@ -10,13 +10,18 @@ export class FollowService {
   }
 
   public async loadMoreFollowers(
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: User | null
+    request: PagedUserItemRequest
   ): Promise<[User[], boolean]> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfUsers(lastItem, pageSize, user.alias);
+    console.log("loading more followers...\n");
+    try {
+      const [followers, hasMore] = await this.serverFacade.getMoreFollowers(
+        request
+      );
+      return [followers, hasMore];
+    } catch (error) {
+      console.error("Failed to fetch followers:", error);
+      throw error;
+    }
   }
 
   public async loadMoreFollowees(
