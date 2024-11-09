@@ -18,6 +18,7 @@ export class FollowService {
     lastItem: UserDto | null
   ): Promise<[UserDto[], boolean]> {
     // TODO: Replace with the result of calling server
+    console.log("loading more followees from server...\n");
     return this.getFakeData(lastItem, pageSize, userAlias);
   }
 
@@ -26,12 +27,15 @@ export class FollowService {
     pageSize: number,
     userAlias: string
   ): Promise<[UserDto[], boolean]> {
+    console.log("Getting fake data in server...\n");
     const [items, hasMore] = FakeData.instance.getPageOfUsers(
       User.fromDto(lastItem),
       pageSize,
       userAlias
     );
     const dtos = items.map((user) => user.dto);
+    console.log(lastItem);
+    console.log(User.fromDto(lastItem));
     return [dtos, hasMore];
   }
 }
