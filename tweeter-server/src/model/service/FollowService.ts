@@ -1,6 +1,7 @@
-import { AuthToken, User, FakeData, UserDto } from "tweeter-shared";
+import { AuthToken, User, FakeData, UserDto, StatusDto } from "tweeter-shared";
+import { Service } from "./Service";
 
-export class FollowService {
+export class FollowService extends Service<UserDto> {
   public async loadMoreFollowers(
     token: string,
     userAlias: string,
@@ -22,7 +23,7 @@ export class FollowService {
     return this.getFakeData(lastItem, pageSize, userAlias);
   }
 
-  private async getFakeData(
+  protected async getFakeData(
     lastItem: UserDto | null,
     pageSize: number,
     userAlias: string

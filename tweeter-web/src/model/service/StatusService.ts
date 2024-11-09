@@ -1,14 +1,31 @@
-import { AuthToken, Status, FakeData, User } from "tweeter-shared";
+import {
+  AuthToken,
+  Status,
+  FakeData,
+  User,
+  PagedStatusItemRequest,
+} from "tweeter-shared";
+import { ServerFacade } from "../../network/ServerFacade";
 
 export class StatusService {
+  private serverFacade: ServerFacade;
+
+  public constructor() {
+    this.serverFacade = new ServerFacade();
+  }
   public async loadMoreFeedItems(
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: Status | null
+    request: PagedStatusItemRequest
   ): Promise<[Status[], boolean]> {
     // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+    try {
+      const [feedItems, hasMore] = await this.serverFacade.getMoreFeedItems(
+        request
+      );
+      return [feedItems, hasMore];
+    } catch (error) {
+      console.error("Failed to fetch feed items:", error);
+      throw error;
+    }
   }
 
   public async loadMoreStoryItems(
