@@ -47,12 +47,16 @@ export abstract class PagedItemPresenter<T, U> extends Presenter<
   }
 
   public async loadMoreItems(authToken: AuthToken, user: User) {
+    console.log("loading more items...\n");
     this.doFailureReportingOperation(async () => {
       let [newItems, hasMore] = await this.getMoreItems(authToken, user);
 
       this._hasMoreItems = hasMore;
+      console.log(`hasMoreItems = ${this.hasMoreItems}\n`);
       this._lastItem = newItems[newItems.length - 1];
+      console.log(`lastItem = ${JSON.stringify(this.lastItem)}`);
       this.view.addItems(newItems);
+      console.log(`newItems = ${JSON.stringify(newItems)}`);
     }, this.getItemDescription());
   }
 

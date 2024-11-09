@@ -81,7 +81,7 @@ const AuthenticatedRoutes = () => {
           path="followees"
           element={
             <ItemScroller
-              key={1}
+              key={3}
               presenterGenerator={(view: PagedItemView<User>) =>
                 new FolloweePresenter(view)
               }
@@ -93,7 +93,7 @@ const AuthenticatedRoutes = () => {
           path="followers"
           element={
             <ItemScroller
-              key={2}
+              key={4}
               presenterGenerator={(view: PagedItemView<User>) =>
                 new FollowerPresenter(view)
               }
