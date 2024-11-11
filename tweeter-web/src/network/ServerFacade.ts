@@ -3,7 +3,10 @@ import {
   PagedStatusItemResponse,
   PagedUserItemRequest,
   PagedUserItemResponse,
+  PostStatusRequest,
   Status,
+  TweeterRequest,
+  TweeterResponse,
   User,
   UserDto,
 } from "tweeter-shared";
@@ -118,6 +121,16 @@ export class ServerFacade {
     } else {
       console.error(response);
       throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async postStatus(request: PostStatusRequest): Promise<void> {
+    const response = await this.clientCommunicator.doPost<
+      PostStatusRequest,
+      TweeterResponse
+    >(request, "/postStatus");
+    if (!response.success) {
+      throw new Error(response.message ?? "An unkown error occurred...");
     }
   }
 }

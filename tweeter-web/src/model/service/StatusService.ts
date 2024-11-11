@@ -4,6 +4,7 @@ import {
   FakeData,
   User,
   PagedStatusItemRequest,
+  PostStatusRequest,
 } from "tweeter-shared";
 import { ServerFacade } from "../../network/ServerFacade";
 
@@ -43,12 +44,14 @@ export class StatusService {
     }
   }
 
-  public async postStatus(
-    authToken: AuthToken,
-    newStatus: Status
-  ): Promise<void> {
+  public async postStatus(request: PostStatusRequest): Promise<void> {
     // Pause so we can see the logging out message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
+    try {
+      await this.serverFacade.postStatus(request);
+    } catch (error) {
+      console.error("Failed to post status:", error);
+      throw error;
+    }
 
     // TODO: Call the server to post the status
   }
