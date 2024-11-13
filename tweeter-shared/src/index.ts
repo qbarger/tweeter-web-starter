@@ -22,6 +22,7 @@ export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
 export type { UserRequest } from "./model/net/request/UserRequest";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
 export type { RegisterRequest } from "./model/net/request/RegisterRequest";
+export type { IsFollowingRequest } from "./model/net/request/IsFollowingRequest";
 
 // Responses
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";
@@ -29,3 +30,4 @@ export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemRe
 export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
 export type { UserResponse } from "./model/net/response/UserResponse";
 export type { AuthenticationResponse } from "./model/net/response/AuthenticationResponse";
+export type { IsFollowingResponse } from "./model/net/response/IsFollowingResponse";

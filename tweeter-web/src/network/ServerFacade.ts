@@ -1,6 +1,8 @@
 import {
   AuthenticationResponse,
   AuthToken,
+  IsFollowingRequest,
+  IsFollowingResponse,
   LoginRequest,
   PagedStatusItemRequest,
   PagedStatusItemResponse,
@@ -205,6 +207,25 @@ export class ServerFacade {
           ),
           new AuthToken(response.authToken.token, response.authToken.timestamp),
         ];
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async getIsFollowerStatus(
+    request: IsFollowingRequest
+  ): Promise<boolean> {
+    const response = await this.clientCommunicator.doPost<
+      IsFollowingRequest,
+      IsFollowingResponse
+    >(request, "/isFollowerStatus");
+    if (response.success) {
+      if (response.isFollowing == null) {
+        throw new Error(`Unable to get follower status...`);
+      } else {
+        return response.isFollowing;
       }
     } else {
       console.error(response);

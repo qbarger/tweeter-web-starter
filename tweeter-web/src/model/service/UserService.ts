@@ -6,6 +6,7 @@ import {
   UserRequest,
   LoginRequest,
   RegisterRequest,
+  IsFollowingRequest,
 } from "tweeter-shared";
 import { ServerFacade } from "../../network/ServerFacade";
 
@@ -49,12 +50,15 @@ export class UserService {
   }
 
   public async getIsFollowerStatus(
-    authToken: AuthToken,
-    user: User,
-    selectedUser: User
+    request: IsFollowingRequest
   ): Promise<boolean> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.isFollower();
+    try {
+      const response = await this.serverFacade.getIsFollowerStatus(request);
+      return response;
+    } catch (error) {
+      console.error("Failed to get follower status:", error);
+      throw error;
+    }
   }
 
   public async getFollowerCount(
