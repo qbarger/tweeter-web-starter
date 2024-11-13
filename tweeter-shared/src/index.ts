@@ -18,8 +18,10 @@ export type { TweeterRequest } from "./model/net/request/TweeterRequest";
 export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequest";
 export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItemRequest";
 export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
+export type { UserRequest } from "./model/net/request/UserRequest";
 
 // Responses
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";
 export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemResponse";
 export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
+export type { UserResponse } from "./model/net/response/UserResponse";

@@ -1,4 +1,4 @@
-import { AuthToken, User } from "tweeter-shared";
+import { AuthToken, User, UserRequest } from "tweeter-shared";
 import UserService from "../model/service/UserService";
 import { Presenter, View } from "./Presenter";
 
@@ -20,17 +20,20 @@ export class UserNavigationPresenter extends Presenter<UserNavigationView> {
     currentUser: User | null
   ): Promise<void> {
     event.preventDefault();
-
     try {
       const alias = this.extractAlias(event.target.toString());
 
-      const user = await this.userService.getUser(authToken!, alias);
+      const request: UserRequest = {
+        token: authToken?.token ?? "",
+        alias: alias,
+      };
 
-      if (!!user) {
-        if (currentUser!.equals(user)) {
+      const response = await this.userService.getUser(request);
+      if (!!response) {
+        if (currentUser!.equals(response)) {
           this.view.setDisplayedUser(currentUser!);
         } else {
-          this.view.setDisplayedUser(user);
+          this.view.setDisplayedUser(response);
         }
       }
     } catch (error) {

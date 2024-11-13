@@ -9,6 +9,8 @@ import {
   TweeterResponse,
   User,
   UserDto,
+  UserRequest,
+  UserResponse,
 } from "tweeter-shared";
 import { ClientCommunicator } from "./ClientCommunicator";
 
@@ -131,6 +133,28 @@ export class ServerFacade {
     >(request, "/postStatus");
     if (!response.success) {
       throw new Error(response.message ?? "An unkown error occurred...");
+    }
+  }
+
+  public async getUser(request: UserRequest): Promise<User | null> {
+    const response = await this.clientCommunicator.doPost<
+      UserRequest,
+      UserResponse
+    >(request, "/getUser");
+    if (response.success) {
+      if (response.user == null) {
+        throw new Error(`No user found...`);
+      } else {
+        return new User(
+          response.user.firstName,
+          response.user.lastName,
+          response.user.alias,
+          response.user.imageUrl
+        );
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
     }
   }
 }

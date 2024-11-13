@@ -1,21 +1,12 @@
 import { Buffer } from "buffer";
-import { AuthToken, User, FakeData, UserRequest } from "tweeter-shared";
-import { ServerFacade } from "../../network/ServerFacade";
+import { AuthToken, User, FakeData, UserDto } from "tweeter-shared";
 
 export class UserService {
-  private serverFacade: ServerFacade;
-
-  public constructor() {
-    this.serverFacade = new ServerFacade();
-  }
-  public async getUser(request: UserRequest): Promise<User | null> {
-    try {
-      const user = await this.serverFacade.getUser(request);
-      return user;
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
-      throw error;
-    }
+  public async getUser(token: string, alias: string): Promise<UserDto | null> {
+    // TODO: Replace with the result of calling server
+    const user = FakeData.instance.findUserByAlias(alias);
+    const dto = user?.dto ?? null;
+    return dto;
   }
 
   public async login(

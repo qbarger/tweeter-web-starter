@@ -17,7 +17,6 @@ export class StatusService {
   public async loadMoreFeedItems(
     request: PagedStatusItemRequest
   ): Promise<[Status[], boolean]> {
-    // TODO: Replace with the result of calling server
     try {
       const [feedItems, hasMore] = await this.serverFacade.getMoreFeedItems(
         request
@@ -32,7 +31,6 @@ export class StatusService {
   public async loadMoreStoryItems(
     request: PagedStatusItemRequest
   ): Promise<[Status[], boolean]> {
-    // TODO: Replace with the result of calling server
     try {
       const [feedItems, hasMore] = await this.serverFacade.getMoreFeedItems(
         request
@@ -45,15 +43,12 @@ export class StatusService {
   }
 
   public async postStatus(request: PostStatusRequest): Promise<void> {
-    // Pause so we can see the logging out message. Remove when connected to the server
     try {
       await this.serverFacade.postStatus(request);
     } catch (error) {
       console.error("Failed to post status:", error);
       throw error;
     }
-
-    // TODO: Call the server to post the status
   }
 }
 export default StatusService;
