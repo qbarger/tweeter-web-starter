@@ -7,6 +7,7 @@ import {
   PagedUserItemRequest,
   PagedUserItemResponse,
   PostStatusRequest,
+  RegisterRequest,
   Status,
   TweeterRequest,
   TweeterResponse,
@@ -169,6 +170,31 @@ export class ServerFacade {
     if (response.success) {
       if (response.user == null || response.authToken == null) {
         throw new Error(`Unable to login...`);
+      } else {
+        return [
+          new User(
+            response.user.firstName,
+            response.user.lastName,
+            response.user.alias,
+            response.user.imageUrl
+          ),
+          new AuthToken(response.authToken.token, response.authToken.timestamp),
+        ];
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async register(request: RegisterRequest): Promise<[User, AuthToken]> {
+    const response = await this.clientCommunicator.doPost<
+      RegisterRequest,
+      AuthenticationResponse
+    >(request, "/register");
+    if (response.success) {
+      if (response.user == null || response.authToken == null) {
+        throw new Error(`Unable to register...`);
       } else {
         return [
           new User(

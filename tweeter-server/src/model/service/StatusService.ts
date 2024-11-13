@@ -8,7 +8,6 @@ export class StatusService extends Service<StatusDto> {
     pageSize: number,
     lastItem: StatusDto | null
   ): Promise<[StatusDto[], boolean]> {
-    // TODO: Replace with the result of calling server
     const fakeData = await this.getFakeData(lastItem, pageSize, userAlias);
     return fakeData;
   }
@@ -19,7 +18,6 @@ export class StatusService extends Service<StatusDto> {
     pageSize: number,
     lastItem: StatusDto | null
   ): Promise<[StatusDto[], boolean]> {
-    // TODO: Replace with the result of calling server
     return this.getFakeData(lastItem, pageSize, userAlias);
   }
 

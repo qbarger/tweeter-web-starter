@@ -21,6 +21,7 @@ export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItem
 export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
 export type { UserRequest } from "./model/net/request/UserRequest";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
+export type { RegisterRequest } from "./model/net/request/RegisterRequest";
 
 // Responses
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";

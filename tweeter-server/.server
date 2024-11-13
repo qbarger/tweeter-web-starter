@@ -8,5 +8,6 @@ tweeterGetStoryItems | lambda/status/GetMoreStoryItems.handler
 tweeterPostStatus | lambda/status/PostStatusLambda.handler
 tweeterGetUser | lambda/user/GetUserLambda.handler
 tweeterLogin | lambda/user/LoginLambda.handler
+tweeterRegister | lambda/user/RegisterLambda.handler
 '
-LAMBDALAYER_ARN='arn:aws:lambda:us-east-1:211125463401:layer:layerForScripts:16'
+LAMBDALAYER_ARN='arn:aws:lambda:us-east-1:211125463401:layer:layerForScripts:19'

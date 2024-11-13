@@ -1,4 +1,4 @@
-import { User, AuthToken } from "tweeter-shared";
+import { User, AuthToken, RegisterRequest } from "tweeter-shared";
 import {
   AuthenticationPresenter,
   AuthenticationView,
@@ -16,7 +16,7 @@ export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
     super(view);
   }
 
-  public getUser(
+  public async getUser(
     alias: string,
     password: string,
     rememberMe: boolean | undefined,
@@ -26,14 +26,21 @@ export class RegisterPresenter extends AuthenticationPresenter<RegisterView> {
     imageFileExtension?: string,
     originalUrl?: string
   ): Promise<[User, AuthToken]> {
-    return this.service.register(
-      firstName!,
-      lastName!,
-      alias,
-      password,
-      imageBytes!,
-      imageFileExtension!
-    );
+    console.log("getUser being called");
+    const imageStringBase64: string = Buffer.from(
+      imageBytes ?? new Uint8Array()
+    ).toString("base64");
+    const request: RegisterRequest = {
+      token: "",
+      alias: alias,
+      password: password,
+      firstname: firstName ?? "",
+      lastname: lastName ?? "",
+      userImageBytes: imageStringBase64,
+      imageFileExtension: imageFileExtension ?? "",
+    };
+    const [user, authToken] = await this.service.register(request);
+    return [user, authToken];
   }
 
   public handleImageFile(file: File | undefined) {
