@@ -1,6 +1,10 @@
 import {
   AuthenticationResponse,
   AuthToken,
+  Follow,
+  FollowNumResponse,
+  FollowTypeRequest,
+  FollowTypeResponse,
   IsFollowingRequest,
   IsFollowingResponse,
   LoginRequest,
@@ -230,6 +234,89 @@ export class ServerFacade {
     } else {
       console.error(response);
       throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async getFollowerCount(request: FollowTypeRequest): Promise<number> {
+    const response = await this.clientCommunicator.doPost<
+      FollowTypeRequest,
+      FollowTypeResponse
+    >(request, "/followerCount");
+    if (response.success) {
+      if (response.count == null) {
+        throw new Error(`Unable to get follower count...`);
+      } else {
+        return response.count;
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async getFolloweeCount(request: FollowTypeRequest): Promise<number> {
+    const response = await this.clientCommunicator.doPost<
+      FollowTypeRequest,
+      FollowTypeResponse
+    >(request, "/getFolloweeCount");
+    if (response.success) {
+      if (response.count == null) {
+        throw new Error(`Unable to get followee count...`);
+      } else {
+        return response.count;
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async follow(
+    request: FollowTypeRequest
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const response = await this.clientCommunicator.doPost<
+      FollowTypeRequest,
+      FollowNumResponse
+    >(request, "/follow");
+    if (response.success) {
+      if (response.followerCount == null || response.followeeCount == null) {
+        throw new Error(`Unable to follow account...`);
+      } else {
+        return [response.followerCount, response.followeeCount];
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async unfollow(
+    request: FollowTypeRequest
+  ): Promise<[followerCount: number, followeeCount: number]> {
+    const response = await this.clientCommunicator.doPost<
+      FollowTypeRequest,
+      FollowNumResponse
+    >(request, "/unfollow");
+    if (response.success) {
+      if (response.followerCount == null || response.followeeCount == null) {
+        throw new Error(`Unable to unfollow account...`);
+      } else {
+        return [response.followerCount, response.followeeCount];
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unkown error occurred...");
+    }
+  }
+
+  public async logout(request: TweeterRequest): Promise<void> {
+    const response = await this.clientCommunicator.doPost<
+      TweeterRequest,
+      TweeterResponse
+    >(request, "/logout");
+    if (!response.success) {
+      console.error(response);
+      throw new Error(response.message ?? "An unkown error occurred...");
     }
   }
 }

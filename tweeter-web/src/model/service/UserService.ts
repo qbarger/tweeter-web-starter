@@ -7,6 +7,8 @@ import {
   LoginRequest,
   RegisterRequest,
   IsFollowingRequest,
+  FollowTypeRequest,
+  TweeterRequest,
 } from "tweeter-shared";
 import { ServerFacade } from "../../network/ServerFacade";
 
@@ -61,60 +63,57 @@ export class UserService {
     }
   }
 
-  public async getFollowerCount(
-    authToken: AuthToken,
-    user: User
-  ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getFollowerCount(user.alias);
+  public async getFollowerCount(request: FollowTypeRequest): Promise<number> {
+    try {
+      const response = await this.serverFacade.getFollowerCount(request);
+      return response;
+    } catch (error) {
+      console.error("Failed to get follower count:", error);
+      throw error;
+    }
   }
 
-  public async getFolloweeCount(
-    authToken: AuthToken,
-    user: User
-  ): Promise<number> {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getFolloweeCount(user.alias);
+  public async getFolloweeCount(request: FollowTypeRequest): Promise<number> {
+    try {
+      const response = await this.serverFacade.getFolloweeCount(request);
+      return response;
+    } catch (error) {
+      console.error("Failed to get followee count:", error);
+      throw error;
+    }
   }
 
   public async follow(
-    authToken: AuthToken,
-    userToFollow: User
+    request: FollowTypeRequest
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // Pause so we can see the follow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
+    try {
+      await new Promise((f) => setTimeout(f, 2000));
+      const followerCount = await this.getFollowerCount(request);
+      const followeeCount = await this.getFolloweeCount(request);
 
-    // TODO: Call the server
-
-    const followerCount = await this.getFollowerCount(authToken, userToFollow);
-    const followeeCount = await this.getFolloweeCount(authToken, userToFollow);
-
-    return [followerCount, followeeCount];
+      return [followerCount, followeeCount];
+    } catch (error) {
+      console.error("Failed to get follower count:", error);
+      throw error;
+    }
   }
 
   public async unfollow(
-    authToken: AuthToken,
-    userToUnfollow: User
+    request: FollowTypeRequest
   ): Promise<[followerCount: number, followeeCount: number]> {
-    // Pause so we can see the unfollow message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
+    try {
+      await new Promise((f) => setTimeout(f, 2000));
+      const followerCount = await this.getFollowerCount(request);
+      const followeeCount = await this.getFolloweeCount(request);
 
-    // TODO: Call the server
-
-    const followerCount = await this.getFollowerCount(
-      authToken,
-      userToUnfollow
-    );
-    const followeeCount = await this.getFolloweeCount(
-      authToken,
-      userToUnfollow
-    );
-
-    return [followerCount, followeeCount];
+      return [followerCount, followeeCount];
+    } catch (error) {
+      console.error("Failed to get followee count", error);
+      throw error;
+    }
   }
 
-  public async logout(authToken: AuthToken): Promise<void> {
-    // Pause so we can see the logging out message. Delete when the call to the server is implemented.
+  public async logout(request: TweeterRequest): Promise<void> {
     await new Promise((res) => setTimeout(res, 1000));
   }
 }

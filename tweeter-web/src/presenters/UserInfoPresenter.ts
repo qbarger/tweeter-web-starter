@@ -1,4 +1,9 @@
-import { AuthToken, IsFollowingRequest, User } from "tweeter-shared";
+import {
+  AuthToken,
+  FollowTypeRequest,
+  IsFollowingRequest,
+  User,
+} from "tweeter-shared";
 import UserService from "../model/service/UserService";
 import { MessageView, Presenter } from "./Presenter";
 
@@ -25,12 +30,15 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
     event.preventDefault();
 
     try {
+      const request: FollowTypeRequest = {
+        token: authToken.token,
+        user: displayedUser!.dto,
+      };
       this.view.setIsLoading(true);
       this.view.displayInfoMessage(`Following ${displayedUser!.name}...`, 0);
 
       const [followerCount, followeeCount] = await this.userService.follow(
-        authToken!,
-        displayedUser!
+        request
       );
 
       this.view.setIsFollower(true);
@@ -54,12 +62,15 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
     event.preventDefault();
 
     try {
+      const request: FollowTypeRequest = {
+        token: authToken.token,
+        user: displayedUser!.dto,
+      };
       this.view.setIsLoading(true);
       this.view.displayInfoMessage(`Unfollowing ${displayedUser!.name}...`, 0);
 
       const [followerCount, followeeCount] = await this.userService.unfollow(
-        authToken!,
-        displayedUser!
+        request
       );
 
       this.view.setIsFollower(false);
@@ -77,8 +88,12 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
 
   public async setNumbFollowers(authToken: AuthToken, displayedUser: User) {
     try {
+      const request: FollowTypeRequest = {
+        token: authToken.token,
+        user: displayedUser,
+      };
       this.view.setFollowerCount(
-        await this.userService.getFollowerCount(authToken, displayedUser)
+        await this.userService.getFollowerCount(request)
       );
     } catch (error) {
       this.view.displayErrorMessage(
@@ -88,8 +103,12 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
   }
   public async setNumbFollowees(authToken: AuthToken, displayedUser: User) {
     try {
+      const request: FollowTypeRequest = {
+        token: authToken.token,
+        user: displayedUser.dto,
+      };
       this.view.setFolloweeCount(
-        await this.userService.getFolloweeCount(authToken, displayedUser)
+        await this.userService.getFolloweeCount(request)
       );
     } catch (error) {
       this.view.displayErrorMessage(
