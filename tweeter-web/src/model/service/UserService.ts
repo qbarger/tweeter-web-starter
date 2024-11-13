@@ -1,5 +1,11 @@
 import { Buffer } from "buffer";
-import { AuthToken, User, FakeData, UserRequest } from "tweeter-shared";
+import {
+  AuthToken,
+  User,
+  FakeData,
+  UserRequest,
+  LoginRequest,
+} from "tweeter-shared";
 import { ServerFacade } from "../../network/ServerFacade";
 
 export class UserService {
@@ -18,18 +24,14 @@ export class UserService {
     }
   }
 
-  public async login(
-    alias: string,
-    password: string
-  ): Promise<[User, AuthToken]> {
-    // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
-
-    if (user === null) {
-      throw new Error("Invalid alias or password");
+  public async login(request: LoginRequest): Promise<[User, AuthToken]> {
+    try {
+      const response = await this.serverFacade.login(request);
+      return [response[0], response[1]];
+    } catch (error) {
+      console.error("Failed to login user:", error);
+      throw error;
     }
-
-    return [user, FakeData.instance.authToken];
   }
 
   public async register(

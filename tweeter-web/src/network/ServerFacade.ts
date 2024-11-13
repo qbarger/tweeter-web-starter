@@ -1,4 +1,7 @@
 import {
+  AuthenticationResponse,
+  AuthToken,
+  LoginRequest,
   PagedStatusItemRequest,
   PagedStatusItemResponse,
   PagedUserItemRequest,
@@ -151,6 +154,31 @@ export class ServerFacade {
           response.user.alias,
           response.user.imageUrl
         );
+      }
+    } else {
+      console.error(response);
+      throw new Error(response.message ?? "An unknown error occurred...");
+    }
+  }
+
+  public async login(request: LoginRequest): Promise<[User, AuthToken]> {
+    const response = await this.clientCommunicator.doPost<
+      LoginRequest,
+      AuthenticationResponse
+    >(request, "/login");
+    if (response.success) {
+      if (response.user == null || response.authToken == null) {
+        throw new Error(`Unable to login...`);
+      } else {
+        return [
+          new User(
+            response.user.firstName,
+            response.user.lastName,
+            response.user.alias,
+            response.user.imageUrl
+          ),
+          new AuthToken(response.authToken.token, response.authToken.timestamp),
+        ];
       }
     } else {
       console.error(response);

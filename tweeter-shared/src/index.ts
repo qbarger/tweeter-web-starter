@@ -12,6 +12,7 @@ export { FakeData } from "./util/FakeData";
 // DTO
 export type { UserDto } from "./model/dto/UserDto";
 export type { StatusDto } from "./model/dto/StatusDto";
+export type { AuthTokenDto } from "./model/dto/AuthTokenDto";
 
 // Requests
 export type { TweeterRequest } from "./model/net/request/TweeterRequest";
@@ -19,9 +20,11 @@ export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequ
 export type { PagedStatusItemRequest } from "./model/net/request/PagedStatusItemRequest";
 export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
 export type { UserRequest } from "./model/net/request/UserRequest";
+export type { LoginRequest } from "./model/net/request/LoginRequest";
 
 // Responses
 export type { TweeterResponse } from "./model/net/response/TweeterResponse";
 export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemResponse";
 export type { PagedStatusItemResponse } from "./model/net/response/PagedStatusItemResponse";
 export type { UserResponse } from "./model/net/response/UserResponse";
+export type { AuthenticationResponse } from "./model/net/response/AuthenticationResponse";
