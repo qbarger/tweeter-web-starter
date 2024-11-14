@@ -17,5 +17,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/model/service/StatusService.ts"]
+  "include": ["src", "src/model/service/StatusService.ts", "test"]
 }
