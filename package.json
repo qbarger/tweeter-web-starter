@@ -8,6 +8,7 @@
   "author": "JWilkerson",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.705.0",
     "@aws-sdk/lib-dynamodb": "^3.705.0",
     "react-router-dom": "^6.27.0",
     "rimraf": "^5.0.5",
