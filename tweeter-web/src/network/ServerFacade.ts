@@ -1,7 +1,6 @@
 import {
   AuthenticationResponse,
   AuthToken,
-  Follow,
   FollowNumResponse,
   FollowTypeRequest,
   FollowTypeResponse,
@@ -18,7 +17,6 @@ import {
   TweeterRequest,
   TweeterResponse,
   User,
-  UserDto,
   UserRequest,
   UserResponse,
 } from "tweeter-shared";
