@@ -32,8 +32,11 @@ export class UserDao implements Dao<User> {
       TableName: this.tableName,
       Item: {
         [this.user]: request.alias,
-        [this.followerCount]: initial,
-        [this.followeeCount]: initial,
+        firstName: { S: request.firstName },
+        lastName: { S: request.lastName },
+        imageUrl: { S: request.imageUrl },
+        [this.followerCount]: initial.toString(),
+        [this.followeeCount]: initial.toString(),
       },
     };
     await this.client.send(new PutCommand(params));

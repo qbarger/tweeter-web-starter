@@ -6,8 +6,13 @@ import {
   UserDto,
   AuthTokenDto,
 } from "tweeter-shared";
+import { DaoFactory } from "../../dao/DaoFactory";
+import { UserDaoFactory } from "../../dao/UserDaoFactory";
 
 export class UserService {
+  private daoFactory: UserDaoFactory = new UserDaoFactory();
+  private userDao = this.daoFactory.getDao();
+
   public async getUser(token: string, alias: string): Promise<UserDto | null> {
     const user = FakeData.instance.findUserByAlias(alias);
     const dto = user?.dto ?? null;
@@ -35,12 +40,19 @@ export class UserService {
     userImageBytes: Uint8Array,
     imageFileExtension: string
   ): Promise<[UserDto, AuthTokenDto]> {
-    const user = FakeData.instance.firstUser;
-
-    if (user === null) {
-      throw new Error("Invalid registration");
+    const user = new User(firstName, lastName, alias, imageFileExtension);
+    if (
+      !firstName ||
+      !lastName ||
+      !alias ||
+      !password ||
+      !userImageBytes ||
+      !imageFileExtension
+    ) {
+      throw new Error("Invalid registration...");
     }
 
+    await this.userDao.put(user);
     return [user.dto, FakeData.instance.authToken.dto];
   }
 
