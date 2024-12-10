@@ -46,9 +46,10 @@ export class PostStatusPresenter extends Presenter<PostStatusView> {
     currentUser: User,
     authToken: AuthToken
   ) {
+    const status = new Status(post, currentUser, Date.now());
     const request: PostStatusRequest = {
       token: authToken?.token,
-      status: new Status(post, currentUser, Date.now()),
+      status: status.dto,
     };
     this.view.setIsLoading(true);
     this.view.displayInfoMessage("Posting status...", 0);

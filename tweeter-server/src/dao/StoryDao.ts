@@ -13,7 +13,7 @@ import { StatusDaoHelper } from "./StatusDaoHelper";
 
 export class StoryDao extends StatusDaoHelper implements Dao<Status> {
   readonly tableName = "story";
-  readonly author = "author_alias";
+  readonly author_alias = "author_alias";
   readonly timestamp = "timestamp";
 
   private readonly client = DynamoDBDocumentClient.from(new DynamoDBClient());
@@ -31,6 +31,7 @@ export class StoryDao extends StatusDaoHelper implements Dao<Status> {
       Item: {
         [this.author]: request.user.alias,
         [this.timestamp]: request.timestamp,
+        post: request.post,
       },
     };
     await this.client.send(new PutCommand(params));
