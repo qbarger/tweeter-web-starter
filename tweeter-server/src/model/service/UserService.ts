@@ -1,10 +1,7 @@
 import { User, FakeData, UserDto, AuthTokenDto } from "tweeter-shared";
 import { UserDaoFactory } from "../../dao/UserDaoFactory";
 import bcrypt from "bcryptjs";
-import { UserDao } from "../../dao/UserDao";
 import { UserData } from "../domain/UserData";
-import { Dao } from "../../dao/Dao";
-import { DaoFactory } from "../../dao/DaoFactory";
 
 const hashPasswordSync = (password: string): string => {
   const saltRounds = 2;
@@ -19,7 +16,7 @@ const verifyPasswordSync = (password: string, hash: string): boolean => {
 
 export class UserService {
   private daoFactory = new UserDaoFactory();
-  private userDao!;
+  private userDao;
 
   constructor() {
     this.userDao = this.daoFactory.getDao();
@@ -35,13 +32,13 @@ export class UserService {
     alias: string,
     password: string
   ): Promise<[UserDto, AuthTokenDto]> {
-    const userData = await this.userDao.get(new User("", "", alias, ""));
+    const userData = await this.userDao.get(new UserData("", "", alias, ""));
 
     if (!userData) {
       throw new Error("User not found");
     }
 
-    const check = verifyPasswordSync(password, userData.password);
+    const check = verifyPasswordSync(password, userData.password ?? "");
 
     if (!check) {
       throw new Error("Invalid password");
@@ -78,13 +75,25 @@ export class UserService {
     }
 
     const hashedPassword = hashPasswordSync(password);
+    const userData = new UserData(
+      user.firstName,
+      user.lastName,
+      user.alias,
+      user.imageUrl
+    );
 
-    await this.userDao.put(user, hashedPassword);
-    const [registeredUser, secret] = await this.userDao.get(user);
+    await this.userDao.put(userData, hashedPassword);
+    const registeredUser = await this.userDao.get(userData);
     if (registeredUser === undefined) {
       throw new Error("Unable to get user...");
     } else {
-      return [registeredUser.dto, FakeData.instance.authToken.dto];
+      const returnedUser = new User(
+        registeredUser.firstName,
+        registeredUser.lastName,
+        registeredUser.alias,
+        registeredUser.imageUrl
+      );
+      return [returnedUser.dto, FakeData.instance.authToken.dto];
     }
   }
 
@@ -98,18 +107,18 @@ export class UserService {
 
   public async getFollowerCount(token: string, user: UserDto): Promise<number> {
     const userData = await this.userDao.get(
-      new User(user.firstName, user.lastName, user.alias, user.imageUrl)
+      new UserData(user.firstName, user.lastName, user.alias, user.imageUrl)
     );
 
-    return userData.follower_count;
+    return userData?.followerCount ?? 0;
   }
 
   public async getFolloweeCount(token: string, user: UserDto): Promise<number> {
     const userData = await this.userDao.get(
-      new User(user.firstName, user.lastName, user.alias, user.imageUrl)
+      new UserData(user.firstName, user.lastName, user.alias, user.imageUrl)
     );
 
-    return userData.followee_count;
+    return userData?.followeeCount ?? 0;
   }
 
   public async logout(token: string): Promise<void> {

@@ -1,10 +1,10 @@
 import { UserData } from "../model/domain/UserData";
 
 export interface Dao<T> {
-  delete?(request: T): Promise<void>;
-  put?(request: T, input?: string): Promise<void>;
-  get?(request: T): Promise<T | undefined>;
-  update?(request: T, input?: string): Promise<void>;
+  delete(request: T): Promise<void>;
+  put(request: T, input?: string): Promise<void>;
+  get(request: T): Promise<T | undefined>;
+  update(request: T, input?: string): Promise<void>;
   upload?(fileName: string, imageStringBase64Encoded: string): Promise<string>;
   incrementFollowers?(request: T): Promise<void>;
   incrementFollowees?(request: T): Promise<void>;

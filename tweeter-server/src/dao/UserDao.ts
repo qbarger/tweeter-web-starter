@@ -108,6 +108,13 @@ export class UserDao implements Dao<UserData> {
     await this.client.send(new UpdateCommand(params));
   }
 
+  update(request: UserData, input?: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  upload?(fileName: string, imageStringBase64Encoded: string): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+
   private generateUserItem(user: UserData) {
     return {
       [this.user]: "@" + user.alias,

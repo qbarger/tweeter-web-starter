@@ -10,6 +10,24 @@ import {
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 export class SessionDao implements Dao<string> {
+  update(request: string, input?: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  upload?(fileName: string, imageStringBase64Encoded: string): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowers?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowees?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowers?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowees?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   readonly tableName = "session";
   readonly token = "authtoken";
   readonly timestamp = "timestamp";
