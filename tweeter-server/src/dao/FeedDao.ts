@@ -35,19 +35,20 @@ export class FeedDao extends StatusDaoHelper implements Dao<Status> {
     };
     await this.client.send(new PutCommand(params));
   }
-  public async get(request: Status): Promise<[Status | undefined, string]> {
+  public async get(request: Status): Promise<Status | undefined> {
     const params = {
       TableName: this.tableName,
       Key: this.generateStatusItem(request),
     };
     const output = await this.client.send(new GetCommand(params));
     if (output.Item === undefined) {
-      return [undefined, ""];
+      return undefined;
     } else {
-      return [
-        new Status(output.Item.post, output.Item.user, output.Item.timestamp),
-        "",
-      ];
+      return new Status(
+        output.Item.post,
+        output.Item.user,
+        output.Item.timestamp
+      );
     }
   }
   update(request: Status): Promise<void> {

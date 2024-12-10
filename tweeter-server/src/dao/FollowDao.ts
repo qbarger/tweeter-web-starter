@@ -41,16 +41,16 @@ export class FollowDao implements Dao<Follow> {
     await this.client.send(new PutCommand(params));
   }
 
-  public async get(request: Follow): Promise<[Follow | undefined, string]> {
+  public async get(request: Follow): Promise<Follow | undefined> {
     const params = {
       TableName: this.tableName,
       Key: this.generateFollowItem(request),
     };
     const output = await this.client.send(new GetCommand(params));
     if (output.Item === undefined) {
-      return [undefined, ""];
+      return undefined;
     } else {
-      return [new Follow(output.Item.follower, output.Item.followee), ""];
+      return new Follow(output.Item.follower, output.Item.followee);
     }
   }
 

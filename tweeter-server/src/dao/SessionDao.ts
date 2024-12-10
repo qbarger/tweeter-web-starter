@@ -33,19 +33,13 @@ export class SessionDao implements Dao<string> {
     };
     await this.client.send(new PutCommand(params));
   }
-  public async get(request: string): Promise<[string | undefined, string]> {
+  public async get(request: string): Promise<string | undefined> {
     const params = {
       TableName: this.tableName,
       Key: this.generateTokenItem(request),
     };
     const output = await this.client.send(new GetCommand(params));
     return output.Item == undefined ? undefined : output.Item.token.S;
-  }
-  update(request: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  upload(fileName: string, imageStringBase64Encoded: string): Promise<string> {
-    throw new Error("Method not implemented.");
   }
 
   private generateTokenItem(token: string) {

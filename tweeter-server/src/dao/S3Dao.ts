@@ -14,19 +14,7 @@ import {
   ObjectCannedACL,
 } from "@aws-sdk/client-s3";
 
-export class S3Dao implements Dao<string> {
-  delete(request: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  put(request: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  get(request: string): Promise<[string, string]> {
-    throw new Error("Method not implemented.");
-  }
-  update(request: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+export class S3Dao implements Dao<string, string> {
   public async upload(
     fileName: string,
     imageStringBase64Encoded: string

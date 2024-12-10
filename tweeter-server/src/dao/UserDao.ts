@@ -1,4 +1,3 @@
-import { User } from "tweeter-shared";
 import { Dao } from "./Dao";
 import {
   DeleteCommand,
@@ -8,16 +7,17 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { UserData } from "../model/domain/UserData";
 
-export class UserDao implements Dao<User> {
+export class UserDao implements Dao<UserData> {
   readonly tableName = "users";
   readonly user = "user";
-  readonly followerCount = "follower_count";
-  readonly followeeCount = "followee_count";
+  readonly follower_count = "follower_count";
+  readonly followee_count = "followee_count";
 
   private readonly client = DynamoDBDocumentClient.from(new DynamoDBClient());
 
-  public async delete(request: User): Promise<void> {
+  public async delete(request: UserData): Promise<void> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
@@ -25,7 +25,7 @@ export class UserDao implements Dao<User> {
     await this.client.send(new DeleteCommand(params));
   }
 
-  public async put(request: User, password: string): Promise<void> {
+  public async put(request: UserData, password: string): Promise<void> {
     const initial: number = 0;
     const params = {
       TableName: this.tableName,
@@ -35,14 +35,14 @@ export class UserDao implements Dao<User> {
         lastName: request.lastName,
         password: password,
         imageUrl: request.imageUrl,
-        [this.followerCount]: initial.toString(),
-        [this.followeeCount]: initial.toString(),
+        [this.follower_count]: initial.toString(),
+        [this.followee_count]: initial.toString(),
       },
     };
     await this.client.send(new PutCommand(params));
   }
 
-  public async get(request: User): Promise<[User | undefined, string]> {
+  public async get(request: UserData): Promise<UserData | undefined> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
@@ -50,80 +50,65 @@ export class UserDao implements Dao<User> {
     const output = await this.client.send(new GetCommand(params));
 
     if (output.Item === undefined) {
-      return [undefined, ""];
+      return undefined;
     } else {
-      console.log(output.Item.firstName);
-      console.log(output.Item.lastName);
-      console.log(output.Item.alias);
-      console.log(output.Item.password);
-      return [
-        new User(
-          output.Item.firstName,
-          output.Item.lastName,
-          output.Item.user,
-          output.Item.imageUrl
-        ),
-        output.Item.password,
-      ];
+      return new UserData(
+        output.Item.firstName,
+        output.Item.lastName,
+        output.Item.user,
+        output.Item.imageUrl,
+        output.Item.follower_count,
+        output.Item.followee_count,
+        output.Item.password
+      );
     }
   }
 
-  public async update(request: User): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-
-  public async upload(
-    fileName: string,
-    imageStringBase64Encoded: string
-  ): Promise<string> {
-    throw new Error("Method not implemented.");
-  }
-
-  public async incrementFollowers(request: User): Promise<void> {
+  public async incrementFollowers(request: UserData): Promise<void> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
       ExpressionAttributeValues: { ":inc": 1 },
       UpdateExpression:
-        "SET " + this.followerCount + " = " + this.followerCount + " + :inc",
+        "SET " + this.follower_count + " = " + this.follower_count + " + :inc",
     };
     await this.client.send(new UpdateCommand(params));
   }
 
-  public async incrementFollowees(request: User): Promise<void> {
+  public async incrementFollowees(request: UserData): Promise<void> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
       ExpressionAttributeValues: { ":inc": 1 },
       UpdateExpression:
-        "SET " + this.followeeCount + " = " + this.followeeCount + " + :inc",
+        "SET " + this.followee_count + " = " + this.followee_count + " + :inc",
     };
     await this.client.send(new UpdateCommand(params));
   }
 
-  public async decrementFollowers(request: User): Promise<void> {
+  public async decrementFollowers(request: UserData): Promise<void> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
       ExpressionAttributeValues: { ":dec": -1 },
       UpdateExpression:
-        "SET " + this.followerCount + " = " + this.followerCount + " + :dec",
+        "SET " + this.follower_count + " = " + this.follower_count + " + :dec",
     };
     await this.client.send(new UpdateCommand(params));
   }
 
-  public async decrementFollowees(request: User): Promise<void> {
+  public async decrementFollowees(request: UserData): Promise<void> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
       ExpressionAttributeValues: { ":dec": -1 },
       UpdateExpression:
-        "SET " + this.followeeCount + " = " + this.followeeCount + " + :dec",
+        "SET " + this.followee_count + " = " + this.followee_count + " + :dec",
     };
     await this.client.send(new UpdateCommand(params));
   }
 
-  private generateUserItem(user: User) {
+  private generateUserItem(user: UserData) {
     return {
       [this.user]: "@" + user.alias,
     };
