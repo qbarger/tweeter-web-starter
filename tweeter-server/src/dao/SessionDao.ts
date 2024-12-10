@@ -33,7 +33,7 @@ export class SessionDao implements Dao<string> {
     };
     await this.client.send(new PutCommand(params));
   }
-  public async get(request: string): Promise<string | undefined> {
+  public async get(request: string): Promise<[string | undefined, string]> {
     const params = {
       TableName: this.tableName,
       Key: this.generateTokenItem(request),

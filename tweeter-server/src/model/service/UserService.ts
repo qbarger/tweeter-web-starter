@@ -1,13 +1,17 @@
-import { Buffer } from "buffer";
-import {
-  AuthToken,
-  User,
-  FakeData,
-  UserDto,
-  AuthTokenDto,
-} from "tweeter-shared";
-import { DaoFactory } from "../../dao/DaoFactory";
+import { User, FakeData, UserDto, AuthTokenDto } from "tweeter-shared";
 import { UserDaoFactory } from "../../dao/UserDaoFactory";
+import bcrypt from "bcryptjs";
+
+const hashPasswordSync = (password: string): string => {
+  const saltRounds = 2;
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+  return hashedPassword;
+};
+
+const verifyPasswordSync = (password: string, hash: string): boolean => {
+  return bcrypt.compareSync(password, hash);
+};
 
 export class UserService {
   private daoFactory: UserDaoFactory = new UserDaoFactory();
@@ -23,9 +27,11 @@ export class UserService {
     alias: string,
     password: string
   ): Promise<[UserDto, AuthTokenDto]> {
-    const user = FakeData.instance.firstUser;
+    const [user, secret] = await this.userDao.get(new User("", "", alias, ""));
 
-    if (user === null) {
+    const check = verifyPasswordSync(password, secret);
+
+    if (user === null || user === undefined || !check) {
       throw new Error("Invalid alias or password");
     }
 
@@ -52,7 +58,9 @@ export class UserService {
       throw new Error("Invalid registration...");
     }
 
-    await this.userDao.put(user);
+    const hashedPassword = hashPasswordSync(password);
+
+    await this.userDao.put(user, hashedPassword);
     return [user.dto, FakeData.instance.authToken.dto];
   }
 

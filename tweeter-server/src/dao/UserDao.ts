@@ -5,7 +5,6 @@ import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
-  QueryCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -26,15 +25,16 @@ export class UserDao implements Dao<User> {
     await this.client.send(new DeleteCommand(params));
   }
 
-  public async put(request: User): Promise<void> {
+  public async put(request: User, password: string): Promise<void> {
     const initial: number = 0;
     const params = {
       TableName: this.tableName,
       Item: {
-        [this.user]: request.alias,
-        firstName: { S: request.firstName },
-        lastName: { S: request.lastName },
-        imageUrl: { S: request.imageUrl },
+        [this.user]: "@" + request.alias,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        password: password,
+        imageUrl: request.imageUrl,
         [this.followerCount]: initial.toString(),
         [this.followeeCount]: initial.toString(),
       },
@@ -42,20 +42,30 @@ export class UserDao implements Dao<User> {
     await this.client.send(new PutCommand(params));
   }
 
-  public async get(request: User): Promise<User | undefined> {
+  public async get(request: User): Promise<[User | undefined, string]> {
     const params = {
       TableName: this.tableName,
       Key: this.generateUserItem(request),
     };
     const output = await this.client.send(new GetCommand(params));
-    return output.Item == undefined
-      ? undefined
-      : new User(
+
+    if (output.Item === undefined) {
+      return [undefined, ""];
+    } else {
+      console.log(output.Item.firstName);
+      console.log(output.Item.lastName);
+      console.log(output.Item.alias);
+      console.log(output.Item.password);
+      return [
+        new User(
           output.Item.firstName,
           output.Item.lastName,
-          output.Item.alias,
-          output.Item.imageFileExtension
-        );
+          output.Item.user,
+          output.Item.imageUrl
+        ),
+        output.Item.password,
+      ];
+    }
   }
 
   public async update(request: User): Promise<void> {
@@ -115,7 +125,7 @@ export class UserDao implements Dao<User> {
 
   private generateUserItem(user: User) {
     return {
-      [this.user]: user.alias,
+      [this.user]: "@" + user.alias,
     };
   }
 }

@@ -21,7 +21,7 @@ export class S3Dao implements Dao<string> {
   put(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  get(request: string): Promise<string> {
+  get(request: string): Promise<[string, string]> {
     throw new Error("Method not implemented.");
   }
   update(request: string): Promise<void> {
