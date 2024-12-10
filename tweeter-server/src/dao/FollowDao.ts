@@ -13,10 +13,10 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 export class FollowDao implements Dao<Follow> {
   readonly tableName = "follows";
   readonly indexName = "follows_index";
-  readonly followerAttr = "follower_alias";
-  readonly followernameAttr = "follower_name";
-  readonly followeeAttr = "followee_alias";
-  readonly followeenameAttr = "followee_name";
+  readonly follower_alias = "follower_alias";
+  readonly follower_name = "follower_name";
+  readonly followee_alias = "followee_alias";
+  readonly followee_name = "followee_name";
 
   private readonly client = DynamoDBDocumentClient.from(new DynamoDBClient());
 
@@ -32,10 +32,10 @@ export class FollowDao implements Dao<Follow> {
     const params = {
       TableName: this.tableName,
       Item: {
-        [this.followerAttr]: request.follower.alias,
-        [this.followeeAttr]: request.followee.alias,
-        [this.followernameAttr]: request.follower.name,
-        [this.followeenameAttr]: request.followee.name,
+        [this.follower_alias]: request.follower.alias,
+        [this.followee_alias]: request.followee.alias,
+        [this.follower_name]: request.follower.name,
+        [this.followee_name]: request.followee.name,
       },
     };
     await this.client.send(new PutCommand(params));
@@ -67,8 +67,8 @@ export class FollowDao implements Dao<Follow> {
 
   private generateFollowItem(request: Follow) {
     return {
-      [this.followerAttr]: request.follower,
-      [this.followeeAttr]: request.followee,
+      [this.follower_alias]: request.follower.alias,
+      [this.followee_alias]: request.followee.alias,
     };
   }
 }

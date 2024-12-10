@@ -1,7 +1,14 @@
-import { User, FakeData, UserDto, AuthTokenDto } from "tweeter-shared";
+import {
+  User,
+  FakeData,
+  UserDto,
+  AuthTokenDto,
+  AuthToken,
+} from "tweeter-shared";
 import { UserDaoFactory } from "../../dao/UserDaoFactory";
 import bcrypt from "bcryptjs";
 import { UserData } from "../domain/UserData";
+import { SessionDaoFactory } from "../../dao/SessionDaoFactory";
 
 const hashPasswordSync = (password: string): string => {
   const saltRounds = 2;
@@ -15,15 +22,29 @@ const verifyPasswordSync = (password: string, hash: string): boolean => {
 };
 
 export class UserService {
-  private daoFactory = new UserDaoFactory();
+  private userDaoFactory = new UserDaoFactory();
+  private sessionDaoFactory = new SessionDaoFactory();
   private userDao;
+  private sessionDao;
 
   constructor() {
-    this.userDao = this.daoFactory.getDao();
+    this.userDao = this.userDaoFactory.getDao();
+    this.sessionDao = this.sessionDaoFactory.getDao();
   }
 
   public async getUser(token: string, alias: string): Promise<UserDto | null> {
-    const user = FakeData.instance.findUserByAlias(alias);
+    const userData = await this.userDao.get(new UserData("", "", alias, ""));
+
+    if (!userData) {
+      throw new Error("User not found");
+    }
+
+    const user = new User(
+      userData.firstName,
+      userData.lastName,
+      userData.alias,
+      userData.imageUrl
+    );
     const dto = user?.dto ?? null;
     return dto;
   }
@@ -51,7 +72,10 @@ export class UserService {
       userData.imageUrl
     );
 
-    return [user.dto, FakeData.instance.authToken.dto];
+    const authtoken = AuthToken.Generate();
+    await this.sessionDao.put(authtoken.token, "", authtoken.timestamp);
+
+    return [user.dto, authtoken.dto];
   }
 
   public async register(
@@ -93,7 +117,9 @@ export class UserService {
         registeredUser.alias,
         registeredUser.imageUrl
       );
-      return [returnedUser.dto, FakeData.instance.authToken.dto];
+      const authtoken = AuthToken.Generate();
+      await this.sessionDao.put(authtoken.token, "", authtoken.timestamp);
+      return [returnedUser.dto, authtoken.dto];
     }
   }
 
@@ -122,7 +148,7 @@ export class UserService {
   }
 
   public async logout(token: string): Promise<void> {
-    await new Promise((res) => setTimeout(res, 1000));
+    await this.sessionDao.delete(token);
   }
 }
 export default UserService;

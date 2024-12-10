@@ -114,7 +114,12 @@ export class UserService {
   }
 
   public async logout(request: TweeterRequest): Promise<void> {
-    await new Promise((res) => setTimeout(res, 1000));
+    try {
+      await this.serverFacade.logout(request);
+    } catch (error) {
+      console.error("Failed to logout", error);
+      throw error;
+    }
   }
 }
 export default UserService;
