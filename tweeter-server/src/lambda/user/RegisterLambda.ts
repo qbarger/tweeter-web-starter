@@ -13,7 +13,7 @@ export const handler = async (
     request.lastname,
     request.alias,
     request.password,
-    uint8array,
+    request.userImageBytes,
     request.imageFileExtension
   );
   return {

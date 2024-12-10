@@ -111,7 +111,7 @@ export class UserDao implements Dao<UserData> {
   update(request: UserData, input?: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  upload?(fileName: string, imageStringBase64Encoded: string): Promise<string> {
+  upload(fileName: string, imageStringBase64Encoded: string): Promise<string> {
     throw new Error("Method not implemented.");
   }
 

@@ -11,6 +11,9 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { AuthToken } from "tweeter-shared";
 
 export class SessionDao implements Dao<string> {
+  upload(fileName: string, imageStringBase64Encoded: string): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
   update(request: string, input?: string): Promise<void> {
     throw new Error("Method not implemented.");
   }

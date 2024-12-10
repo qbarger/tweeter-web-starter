@@ -41,12 +41,14 @@ export class S3Dao implements Dao<string> {
   }
   public async upload(
     fileName: string,
-    imageStringBase64Encoded: string
+    imageStringBase64Encoded: string,
+    alias: string
   ): Promise<string> {
     let decodedImageBuffer: Buffer = Buffer.from(
       imageStringBase64Encoded,
       "base64"
     );
+    fileName = alias + fileName;
     const BUCKET = "qb-cs340tweeterbucket";
     const REGION = "us-east-1";
     const s3Params = {
