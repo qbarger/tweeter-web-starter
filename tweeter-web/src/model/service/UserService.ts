@@ -87,10 +87,9 @@ export class UserService {
     request: FollowTypeRequest
   ): Promise<[followerCount: number, followeeCount: number]> {
     try {
-      await new Promise((f) => setTimeout(f, 2000));
-      const followerCount = await this.getFollowerCount(request);
-      const followeeCount = await this.getFolloweeCount(request);
-
+      const [followerCount, followeeCount] = await this.serverFacade.follow(
+        request
+      );
       return [followerCount, followeeCount];
     } catch (error) {
       console.error("Failed to get follower count:", error);
@@ -102,10 +101,9 @@ export class UserService {
     request: FollowTypeRequest
   ): Promise<[followerCount: number, followeeCount: number]> {
     try {
-      await new Promise((f) => setTimeout(f, 2000));
-      const followerCount = await this.getFollowerCount(request);
-      const followeeCount = await this.getFolloweeCount(request);
-
+      const [followerCount, followeeCount] = await this.serverFacade.unfollow(
+        request
+      );
       return [followerCount, followeeCount];
     } catch (error) {
       console.error("Failed to get followee count", error);

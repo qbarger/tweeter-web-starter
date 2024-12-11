@@ -1,10 +1,10 @@
 import { UserDto } from "../dto/UserDto";
 
 export class User {
-  private _firstName: string;
-  private _lastName: string;
-  private _alias: string;
-  private _imageUrl: string;
+  public firstName: string;
+  public lastName: string;
+  public alias: string;
+  public imageUrl: string;
 
   public constructor(
     firstName: string,
@@ -12,12 +12,13 @@ export class User {
     alias: string,
     imageUrl: string
   ) {
-    this._firstName = firstName;
-    this._lastName = lastName;
-    this._alias = alias;
-    this._imageUrl = imageUrl;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.alias = alias;
+    this.imageUrl = imageUrl;
   }
 
+  /*
   public get firstName(): string {
     return this._firstName;
   }
@@ -34,9 +35,7 @@ export class User {
     this._lastName = value;
   }
 
-  public get name() {
-    return `${this.firstName} ${this.lastName}`;
-  }
+  
 
   public get alias(): string {
     return this._alias;
@@ -53,9 +52,14 @@ export class User {
   public set imageUrl(value: string) {
     this._imageUrl = value;
   }
+    */
+
+  public get name() {
+    return `${this.firstName} ${this.lastName}`;
+  }
 
   public equals(other: User): boolean {
-    return this._alias === other._alias;
+    return this.alias === other.alias;
   }
 
   public static fromJson(json: string | null | undefined): User | null {
@@ -77,12 +81,12 @@ export class User {
     }
   }
 
-  /*
   public toJson(): string {
     return JSON.stringify(this);
   }
-    */
-  public toJSON(): object {
+
+  /*
+  public toJson(): object {
     return {
       firstName: this._firstName,
       lastName: this._lastName,
@@ -90,6 +94,7 @@ export class User {
       imageUrl: this._imageUrl,
     };
   }
+  */
 
   public get dto(): UserDto {
     return {

@@ -84,7 +84,7 @@ export class StoryDao extends StatusDaoHelper implements Dao<Status> {
         }
       }
 
-      return new DataPage<Status>(items, hasMorePages);
+      return new DataPage<Status>(items.reverse(), hasMorePages);
     } catch (error) {
       console.error("Error querying posts:", error);
       throw new Error("Failed to fetch posts");

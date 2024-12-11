@@ -113,6 +113,10 @@ export class UserService {
     ) {
       throw new Error("Invalid registration...");
     }
+    const check = await this.userDao.get(new UserData("", "", alias, ""));
+    if (check) {
+      throw new Error("Username already taken...");
+    }
 
     //upload to bucket
     const bucketUrl = await this.s3Dao.upload(
@@ -181,7 +185,12 @@ export class UserService {
 
   public async getFollowerCount(token: string, user: UserDto): Promise<number> {
     const userData = await this.userDao.get(
-      new UserData(user.firstName, user.lastName, user.alias, user.imageUrl)
+      new UserData(
+        user.firstName,
+        user.lastName,
+        user.alias.slice(1),
+        user.imageUrl
+      )
     );
 
     return userData?.followerCount ?? 0;
@@ -189,7 +198,12 @@ export class UserService {
 
   public async getFolloweeCount(token: string, user: UserDto): Promise<number> {
     const userData = await this.userDao.get(
-      new UserData(user.firstName, user.lastName, user.alias, user.imageUrl)
+      new UserData(
+        user.firstName,
+        user.lastName,
+        user.alias.slice(1),
+        user.imageUrl
+      )
     );
 
     return userData?.followeeCount ?? 0;

@@ -35,9 +35,7 @@ export class FollowDao implements Dao<Follow> {
   readonly tableName = "follows";
   readonly indexName = "follows_index";
   readonly follower_alias = "follower_alias";
-  readonly follower_name = "follower_name";
   readonly followee_alias = "followee_alias";
-  readonly followee_name = "followee_name";
 
   private readonly client = DynamoDBDocumentClient.from(new DynamoDBClient());
 
@@ -55,8 +53,6 @@ export class FollowDao implements Dao<Follow> {
       Item: {
         [this.follower_alias]: request.follower.alias,
         [this.followee_alias]: request.followee.alias,
-        [this.follower_name]: request.follower.name,
-        [this.followee_name]: request.followee.name,
       },
     };
     await this.client.send(new PutCommand(params));

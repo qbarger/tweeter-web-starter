@@ -62,7 +62,7 @@ export class UserData {
   }
 
   public get followerCount(): number | undefined {
-    return this._followerCount == undefined ? undefined : this.followerCount;
+    return this._followerCount;
   }
 
   public set followerCount(value: number) {
@@ -70,7 +70,7 @@ export class UserData {
   }
 
   public get followeeCount(): number | undefined {
-    return this._followeeCount == undefined ? undefined : this.followeeCount;
+    return this._followeeCount;
   }
 
   public set followeeCount(value: number) {
@@ -78,7 +78,7 @@ export class UserData {
   }
 
   public get password(): string | undefined {
-    return this._password == undefined ? undefined : this._password;
+    return this._password;
   }
 
   public set password(value: string) {

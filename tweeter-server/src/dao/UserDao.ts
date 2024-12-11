@@ -45,8 +45,8 @@ export class UserDao implements Dao<UserData> {
         lastName: request.lastName,
         password: password,
         imageUrl: request.imageUrl,
-        [this.follower_count]: initial.toString(),
-        [this.followee_count]: initial.toString(),
+        [this.follower_count]: initial,
+        [this.followee_count]: initial,
       },
     };
     await this.client.send(new PutCommand(params));

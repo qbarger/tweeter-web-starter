@@ -60,7 +60,7 @@ export class FollowService extends Service<UserDto> {
     }
 
     const current_user = await this.userDao.get(
-      new UserData("", "", info[1], "")
+      new UserData("", "", info[1].slice(1), "")
     );
 
     if (current_user === undefined) {
@@ -72,31 +72,29 @@ export class FollowService extends Service<UserDto> {
       current_user.alias,
       current_user.imageUrl
     );
-
-    const follow = new Follow(
-      currentUser,
-      new User(
-        userToFollow.firstName,
-        userToFollow.lastName,
-        userToFollow.alias,
-        userToFollow.imageUrl
-      )
+    const targetUser = new User(
+      userToFollow.firstName,
+      userToFollow.lastName,
+      userToFollow.alias,
+      userToFollow.imageUrl
     );
+
+    const follow = new Follow(currentUser, targetUser);
 
     await this.followDao.put(follow);
     await this.userDao.incrementFollowers(
       new UserData(
-        userToFollow.firstName,
-        userToFollow.lastName,
-        userToFollow.alias,
-        userToFollow.imageUrl
+        targetUser.firstName,
+        targetUser.lastName,
+        targetUser.alias.slice(1),
+        targetUser.imageUrl
       )
     );
     await this.userDao.incrementFollowees(
       new UserData(
         currentUser.firstName,
         currentUser.lastName,
-        currentUser.alias,
+        currentUser.alias.slice(1),
         currentUser.imageUrl
       )
     );
@@ -124,7 +122,7 @@ export class FollowService extends Service<UserDto> {
     }
 
     const current_user = await this.userDao.get(
-      new UserData("", "", info[1], "")
+      new UserData("", "", info[1].slice(1), "")
     );
 
     if (current_user === undefined) {
@@ -137,30 +135,29 @@ export class FollowService extends Service<UserDto> {
       current_user.imageUrl
     );
 
-    const follow = new Follow(
-      currentUser,
-      new User(
-        userToUnfollow.firstName,
-        userToUnfollow.lastName,
-        userToUnfollow.alias,
-        userToUnfollow.imageUrl
-      )
+    const targetUser = new User(
+      userToUnfollow.firstName,
+      userToUnfollow.lastName,
+      userToUnfollow.alias,
+      userToUnfollow.imageUrl
     );
+
+    const follow = new Follow(currentUser, targetUser);
 
     await this.followDao.delete(follow);
     await this.userDao.decrementFollowers(
       new UserData(
-        userToUnfollow.firstName,
-        userToUnfollow.lastName,
-        userToUnfollow.alias,
-        userToUnfollow.imageUrl
+        targetUser.firstName,
+        targetUser.lastName,
+        targetUser.alias.slice(1),
+        targetUser.imageUrl
       )
     );
     await this.userDao.decrementFollowees(
       new UserData(
         currentUser.firstName,
         currentUser.lastName,
-        currentUser.alias,
+        currentUser.alias.slice(1),
         currentUser.imageUrl
       )
     );
