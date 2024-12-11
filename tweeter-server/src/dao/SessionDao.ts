@@ -8,9 +8,30 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { AuthToken } from "tweeter-shared";
+import { AuthToken, User } from "tweeter-shared";
+import { DataPage } from "../model/domain/DataPage";
 
 export class SessionDao implements Dao<string> {
+  query(
+    request: User,
+    size: number,
+    lasttime: number | undefined
+  ): Promise<DataPage<string>> {
+    throw new Error("Method not implemented.");
+  }
+
+  incrementFollowers?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowees?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowers?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowees?(request: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   upload(fileName: string, imageStringBase64Encoded: string): Promise<string> {
     throw new Error("Method not implemented.");
   }

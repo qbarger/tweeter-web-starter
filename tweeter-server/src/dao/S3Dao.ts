@@ -13,8 +13,18 @@ import {
   PutObjectCommand,
   ObjectCannedACL,
 } from "@aws-sdk/client-s3";
+import { DataPage } from "../model/domain/DataPage";
+import { User } from "tweeter-shared";
 
 export class S3Dao implements Dao<string> {
+  query(
+    request: User,
+    size: number,
+    lasttime: number | undefined
+  ): Promise<DataPage<string>> {
+    throw new Error("Method not implemented.");
+  }
+
   delete(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }

@@ -1,4 +1,4 @@
-import { Follow } from "tweeter-shared";
+import { Follow, User } from "tweeter-shared";
 import { Dao } from "./Dao";
 import {
   DeleteCommand,
@@ -9,8 +9,29 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DataPage } from "../model/domain/DataPage";
 
 export class FollowDao implements Dao<Follow> {
+  query(
+    request: User,
+    size: number,
+    lasttime: number | undefined
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+
+  incrementFollowers?(request: Follow): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowees?(request: Follow): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowers?(request: Follow): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowees?(request: Follow): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   readonly tableName = "follows";
   readonly indexName = "follows_index";
   readonly follower_alias = "follower_alias";

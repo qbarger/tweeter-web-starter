@@ -23,7 +23,7 @@ export class StoryPresenter extends StatusItemPresenter {
   }
 
   protected getItemDescription(): string {
-    return "load feed items";
+    return "load story items";
   }
 }
 export default StoryPresenter;

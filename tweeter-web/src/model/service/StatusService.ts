@@ -32,12 +32,12 @@ export class StatusService {
     request: PagedStatusItemRequest
   ): Promise<[Status[], boolean]> {
     try {
-      const [feedItems, hasMore] = await this.serverFacade.getMoreFeedItems(
+      const [feedItems, hasMore] = await this.serverFacade.getMoreStoryItems(
         request
       );
       return [feedItems, hasMore];
     } catch (error) {
-      console.error("Failed to fetch feed items:", error);
+      console.error("Failed to fetch story items:", error);
       throw error;
     }
   }

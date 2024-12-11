@@ -1,3 +1,6 @@
+import { User } from "tweeter-shared";
+import { DataPage } from "../model/domain/DataPage";
+
 export interface Dao<T> {
   delete(request: T): Promise<void>;
   put(request: T, input?: string, value?: number): Promise<void>;
@@ -8,6 +11,11 @@ export interface Dao<T> {
     imageStringBase64Encoded: string,
     alias?: string
   ): Promise<string>;
+  query(
+    request: User,
+    size: number,
+    lasttime: number | undefined
+  ): Promise<DataPage<T>>;
   incrementFollowers?(request: T): Promise<void>;
   incrementFollowees?(request: T): Promise<void>;
   decrementFollowers?(request: T): Promise<void>;

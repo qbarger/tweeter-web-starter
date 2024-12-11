@@ -1,4 +1,4 @@
-import { Status } from "tweeter-shared";
+import { Status, User } from "tweeter-shared";
 import { Dao } from "./Dao";
 import {
   DeleteCommand,
@@ -10,8 +10,28 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { StatusDaoHelper } from "./StatusDaoHelper";
+import { DataPage } from "../model/domain/DataPage";
 
 export class FeedDao extends StatusDaoHelper implements Dao<Status> {
+  query(
+    request: User,
+    size: number,
+    lasttime: number | undefined
+  ): Promise<DataPage<Status>> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowers?(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowees?(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowers?(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowees?(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   readonly tableName = "feed";
   readonly receiver = "receiver_alias";
   readonly timestamp = "timestamp";

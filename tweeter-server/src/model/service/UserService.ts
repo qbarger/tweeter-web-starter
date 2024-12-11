@@ -37,7 +37,10 @@ export class UserService {
   }
 
   public async getUser(token: string, alias: string): Promise<UserDto | null> {
-    const userData = await this.userDao.get(new UserData("", "", alias, ""));
+    const withoutAt = alias.slice(1);
+    const userData = await this.userDao.get(
+      new UserData("", "", withoutAt, "")
+    );
 
     if (!userData) {
       throw new Error("User not found");

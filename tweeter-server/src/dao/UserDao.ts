@@ -8,6 +8,8 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { UserData } from "../model/domain/UserData";
+import { DataPage } from "../model/domain/DataPage";
+import { User } from "tweeter-shared";
 
 export class UserDao implements Dao<UserData> {
   readonly tableName = "users";
@@ -16,6 +18,14 @@ export class UserDao implements Dao<UserData> {
   readonly followee_count = "followee_count";
 
   private readonly client = DynamoDBDocumentClient.from(new DynamoDBClient());
+
+  query(
+    request: User,
+    size: number,
+    lasttime: number | undefined
+  ): Promise<DataPage<UserData>> {
+    throw new Error("Method not implemented.");
+  }
 
   public async delete(request: UserData): Promise<void> {
     const params = {
