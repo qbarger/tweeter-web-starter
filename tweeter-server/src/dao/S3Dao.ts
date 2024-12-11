@@ -28,7 +28,7 @@ export class S3Dao implements Dao<string> {
   delete(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  put(request: string, input?: string): Promise<void> {
+  put(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
   get(request: string): Promise<string | undefined> {
@@ -37,16 +37,16 @@ export class S3Dao implements Dao<string> {
   update(request: string, input?: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  incrementFollowers?(request: string): Promise<void> {
+  incrementFollowers(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  incrementFollowees?(request: string): Promise<void> {
+  incrementFollowees(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  decrementFollowers?(request: string): Promise<void> {
+  decrementFollowers(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  decrementFollowees?(request: string): Promise<void> {
+  decrementFollowees(request: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
   public async upload(

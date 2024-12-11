@@ -20,16 +20,16 @@ export class FeedDao extends StatusDaoHelper implements Dao<Status> {
   ): Promise<DataPage<Status>> {
     throw new Error("Method not implemented.");
   }
-  incrementFollowers?(request: Status): Promise<void> {
+  incrementFollowers(request: Status): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  incrementFollowees?(request: Status): Promise<void> {
+  incrementFollowees(request: Status): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  decrementFollowers?(request: Status): Promise<void> {
+  decrementFollowers(request: Status): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  decrementFollowees?(request: Status): Promise<void> {
+  decrementFollowees(request: Status): Promise<void> {
     throw new Error("Method not implemented.");
   }
   readonly tableName = "feed";

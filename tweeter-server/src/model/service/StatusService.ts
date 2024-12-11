@@ -37,7 +37,7 @@ export class StatusService extends Service<StatusDto> {
     lastItem: StatusDto | null
   ): Promise<[StatusDto[], boolean]> {
     // Check if the session is valid
-    const check = await this.sessionDao.get(token);
+    const check = await this.sessionDao.get([token, ""]);
     if (check === undefined) {
       throw new Error("Invalid authtoken. Need to login...");
     }
@@ -78,8 +78,8 @@ export class StatusService extends Service<StatusDto> {
   }
 
   public async postStatus(token: string, newStatus: StatusDto): Promise<void> {
-    const authtoken = await this.sessionDao.get(token);
-    if (authtoken == undefined || authtoken != token) {
+    const authtoken = await this.sessionDao.get([token, ""]);
+    if (authtoken == undefined || authtoken[0] != token) {
       throw new Error("Invalid authtoken. Need to login...");
     }
     const current_user = new User(

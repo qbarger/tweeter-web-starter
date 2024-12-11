@@ -80,7 +80,11 @@ export class UserService {
     );
 
     const authtoken = AuthToken.Generate();
-    await this.sessionDao.put(authtoken.token, "", authtoken.timestamp);
+    await this.sessionDao.put(
+      [authtoken.token, user.alias],
+      "",
+      authtoken.timestamp
+    );
 
     return [user.dto, authtoken.dto];
   }
@@ -135,7 +139,11 @@ export class UserService {
       );
 
       const authtoken = AuthToken.Generate();
-      await this.sessionDao.put(authtoken.token, "", authtoken.timestamp);
+      await this.sessionDao.put(
+        [authtoken.token, returnedUser.alias],
+        "",
+        authtoken.timestamp
+      );
       return [returnedUser.dto, authtoken.dto];
     }
   }
@@ -165,7 +173,7 @@ export class UserService {
   }
 
   public async logout(token: string): Promise<void> {
-    await this.sessionDao.delete(token);
+    await this.sessionDao.delete([token, ""]);
   }
 }
 export default UserService;

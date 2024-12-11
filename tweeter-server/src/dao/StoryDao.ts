@@ -13,9 +13,6 @@ import { StatusDaoHelper } from "./StatusDaoHelper";
 import { DataPage } from "../model/domain/DataPage";
 
 export class StoryDao extends StatusDaoHelper implements Dao<Status> {
-  get(request: Status): Promise<Status | undefined> {
-    throw new Error("Method not implemented.");
-  }
   readonly tableName = "story";
   readonly author_alias = "author_alias";
   readonly timestamp = "timestamp";
@@ -101,6 +98,21 @@ export class StoryDao extends StatusDaoHelper implements Dao<Status> {
     fileName: string,
     imageStringBase64Encoded: string
   ): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowers(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  incrementFollowees(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowers(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  decrementFollowees(request: Status): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  get(request: Status): Promise<Status | undefined> {
     throw new Error("Method not implemented.");
   }
 }

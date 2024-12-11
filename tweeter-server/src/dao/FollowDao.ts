@@ -20,16 +20,16 @@ export class FollowDao implements Dao<Follow> {
     throw new Error("Method not implemented.");
   }
 
-  incrementFollowers?(request: Follow): Promise<void> {
+  incrementFollowers(request: Follow): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  incrementFollowees?(request: Follow): Promise<void> {
+  incrementFollowees(request: Follow): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  decrementFollowers?(request: Follow): Promise<void> {
+  decrementFollowers(request: Follow): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  decrementFollowees?(request: Follow): Promise<void> {
+  decrementFollowees(request: Follow): Promise<void> {
     throw new Error("Method not implemented.");
   }
   readonly tableName = "follows";

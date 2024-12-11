@@ -16,8 +16,8 @@ export interface Dao<T> {
     size: number,
     lasttime: number | undefined
   ): Promise<DataPage<T>>;
-  incrementFollowers?(request: T): Promise<void>;
-  incrementFollowees?(request: T): Promise<void>;
-  decrementFollowers?(request: T): Promise<void>;
-  decrementFollowees?(request: T): Promise<void>;
+  incrementFollowers(request: T): Promise<void>;
+  incrementFollowees(request: T): Promise<void>;
+  decrementFollowers(request: T): Promise<void>;
+  decrementFollowees(request: T): Promise<void>;
 }
