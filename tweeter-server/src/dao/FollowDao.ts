@@ -63,6 +63,10 @@ export class FollowDao implements Dao<Follow> {
   }
 
   public async get(request: Follow): Promise<Follow | undefined> {
+    if (!request.follower.alias || !request.followee.alias) {
+      throw new Error("Follower or followee alias is missing.");
+    }
+
     const params = {
       TableName: this.tableName,
       Key: this.generateFollowItem(request),

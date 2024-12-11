@@ -4,12 +4,14 @@ import {
   UserDto,
   AuthTokenDto,
   AuthToken,
+  Follow,
 } from "tweeter-shared";
 import { UserDaoFactory } from "../../dao/UserDaoFactory";
 import bcrypt from "bcryptjs";
 import { UserData } from "../domain/UserData";
 import { SessionDaoFactory } from "../../dao/SessionDaoFactory";
 import { S3DaoFactory } from "../../dao/S3DaoFactory";
+import { FollowDaoFactory } from "../../dao/FollowDaoFactory";
 
 const hashPasswordSync = (password: string): string => {
   const saltRounds = 2;
@@ -26,14 +28,17 @@ export class UserService {
   private userDaoFactory = new UserDaoFactory();
   private sessionDaoFactory = new SessionDaoFactory();
   private s3DaoFactory = new S3DaoFactory();
+  private followDaoFactory = new FollowDaoFactory();
   private userDao;
   private sessionDao;
   private s3Dao;
+  private followDao;
 
   constructor() {
     this.userDao = this.userDaoFactory.getDao();
     this.sessionDao = this.sessionDaoFactory.getDao();
     this.s3Dao = this.s3DaoFactory.getDao();
+    this.followDao = this.followDaoFactory.getDao();
   }
 
   public async getUser(token: string, alias: string): Promise<UserDto | null> {
@@ -153,7 +158,25 @@ export class UserService {
     user: UserDto,
     selectedUser: UserDto
   ): Promise<boolean> {
-    return FakeData.instance.isFollower();
+    const authtoken = await this.sessionDao.get([token, ""]);
+    if (authtoken == undefined || authtoken[0] != token) {
+      throw new Error("Invalid authtoken. Need to login...");
+    }
+    const follow = new Follow(
+      new User(user.firstName, user.lastName, user.alias, user.imageUrl),
+      new User(
+        selectedUser.firstName,
+        selectedUser.lastName,
+        selectedUser.alias,
+        selectedUser.imageUrl
+      )
+    );
+
+    const checkFollow = await this.followDao.get(follow);
+    if (checkFollow === undefined) {
+      return false;
+    }
+    return true;
   }
 
   public async getFollowerCount(token: string, user: UserDto): Promise<number> {

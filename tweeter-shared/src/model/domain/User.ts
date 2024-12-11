@@ -77,8 +77,18 @@ export class User {
     }
   }
 
+  /*
   public toJson(): string {
     return JSON.stringify(this);
+  }
+    */
+  public toJSON(): object {
+    return {
+      firstName: this._firstName,
+      lastName: this._lastName,
+      alias: this._alias,
+      imageUrl: this._imageUrl,
+    };
   }
 
   public get dto(): UserDto {
