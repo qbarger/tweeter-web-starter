@@ -14,9 +14,27 @@ import {
   ObjectCannedACL,
 } from "@aws-sdk/client-s3";
 import { DataPage } from "../model/domain/DataPage";
-import { User } from "tweeter-shared";
+import { Follow, User, UserDto } from "tweeter-shared";
 
 export class S3Dao implements Dao<string> {
+  queryFollowers(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+  queryFollowees(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+  batchGet(names: string[]): Promise<UserDto[]> {
+    throw new Error("Method not implemented.");
+  }
+
   query(
     request: User,
     size: number,

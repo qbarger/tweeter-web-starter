@@ -1,4 +1,4 @@
-import { User } from "tweeter-shared";
+import { Follow, User, UserDto } from "tweeter-shared";
 import { DataPage } from "../model/domain/DataPage";
 
 export interface Dao<T> {
@@ -20,4 +20,15 @@ export interface Dao<T> {
   incrementFollowees(request: T): Promise<void>;
   decrementFollowers(request: T): Promise<void>;
   decrementFollowees(request: T): Promise<void>;
+  queryFollowers(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>>;
+  queryFollowees(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>>;
+  batchGet(names: string[]): Promise<UserDto[]>;
 }

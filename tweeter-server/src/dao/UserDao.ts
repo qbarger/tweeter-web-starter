@@ -1,5 +1,7 @@
 import { Dao } from "./Dao";
 import {
+  BatchGetCommand,
+  BatchGetCommandInput,
   DeleteCommand,
   DynamoDBDocumentClient,
   GetCommand,
@@ -9,13 +11,32 @@ import {
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { UserData } from "../model/domain/UserData";
 import { DataPage } from "../model/domain/DataPage";
-import { User } from "tweeter-shared";
+import { Follow, User, UserDto } from "tweeter-shared";
 
 export class UserDao implements Dao<UserData> {
+  queryFollowers(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+  queryFollowees(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+
   readonly tableName = "users";
   readonly user = "user";
   readonly follower_count = "follower_count";
   readonly followee_count = "followee_count";
+  readonly firstName = "firstName";
+  readonly lastName = "lastName";
+  readonly password = "password";
+  readonly imageUrl = "imageUrl";
 
   private readonly client = DynamoDBDocumentClient.from(new DynamoDBClient());
 
@@ -41,10 +62,10 @@ export class UserDao implements Dao<UserData> {
       TableName: this.tableName,
       Item: {
         [this.user]: "@" + request.alias,
-        firstName: request.firstName,
-        lastName: request.lastName,
-        password: password,
-        imageUrl: request.imageUrl,
+        [this.firstName]: request.firstName,
+        [this.lastName]: request.lastName,
+        [this.password]: password,
+        [this.imageUrl]: request.imageUrl,
         [this.follower_count]: initial,
         [this.followee_count]: initial,
       },
@@ -116,6 +137,29 @@ export class UserDao implements Dao<UserData> {
         "SET " + this.followee_count + " = " + this.followee_count + " + :dec",
     };
     await this.client.send(new UpdateCommand(params));
+  }
+
+  public async batchGet(names: string[]): Promise<UserDto[]> {
+    const keys = names.map((name) => ({ [this.user]: name }));
+
+    const params: BatchGetCommandInput = {
+      RequestItems: {
+        [this.tableName]: {
+          Keys: keys,
+        },
+      },
+    };
+
+    const response = await this.client.send(new BatchGetCommand(params));
+    if (response.Responses) {
+      return response.Responses[this.tableName].map<UserDto>((item) => ({
+        firstName: item[this.firstName],
+        lastName: item[this.lastName],
+        alias: item[this.user],
+        imageUrl: item[this.imageUrl],
+      }));
+    }
+    return [];
   }
 
   update(request: UserData, input?: string): Promise<void> {

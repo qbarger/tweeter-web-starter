@@ -68,6 +68,10 @@ export class StatusService extends Service<StatusDto> {
       lastItem?.timestamp
     );
 
+    if (page.values.length === 0) {
+      return [[], false];
+    }
+
     // Map statuses to their DTOs (Data Transfer Objects)
     const statusDtoList: StatusDto[] = page.values.map((status) => status.dto);
 

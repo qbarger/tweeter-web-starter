@@ -35,7 +35,23 @@ export class FollowService extends Service<UserDto> {
     pageSize: number,
     lastItem: UserDto | null
   ): Promise<[UserDto[], boolean]> {
-    return this.getFakeData(lastItem, pageSize, userAlias);
+    const info = await this.sessionDao.get([token, ""]);
+    if (info === undefined) {
+      throw new Error("Invalid authtoken. Need to login...");
+    }
+
+    const page = await this.followDao.queryFollowers(
+      userAlias,
+      pageSize,
+      lastItem?.alias
+    );
+    if (page.values.length === 0) {
+      return [[], false];
+    }
+    const followers = page.values.map((follow) => follow.follower.alias);
+    const followerList = await this.userDao.batchGet(followers);
+
+    return [followerList, page.hasMorePages];
   }
 
   public async loadMoreFollowees(
@@ -44,8 +60,24 @@ export class FollowService extends Service<UserDto> {
     pageSize: number,
     lastItem: UserDto | null
   ): Promise<[UserDto[], boolean]> {
-    console.log("loading more followees from server...\n");
-    return this.getFakeData(lastItem, pageSize, userAlias);
+    const info = await this.sessionDao.get([token, ""]);
+    if (info === undefined) {
+      throw new Error("Invalid authtoken. Need to login...");
+    }
+
+    const page = await this.followDao.queryFollowees(
+      userAlias,
+      pageSize,
+      lastItem?.alias
+    );
+
+    if (page.values.length === 0) {
+      return [[], false];
+    }
+    const followees = page.values.map((follow) => follow.followee.alias);
+    const followeeList = await this.userDao.batchGet(followees);
+
+    return [followeeList, page.hasMorePages];
   }
 
   public async follow(

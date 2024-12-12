@@ -1,4 +1,4 @@
-import { Follow, User } from "tweeter-shared";
+import { Follow, User, UserDto } from "tweeter-shared";
 import { Dao } from "./Dao";
 import {
   DeleteCommand,
@@ -12,6 +12,10 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DataPage } from "../model/domain/DataPage";
 
 export class FollowDao implements Dao<Follow> {
+  batchGet(names: string[]): Promise<UserDto[]> {
+    throw new Error("Method not implemented.");
+  }
+
   query(
     request: User,
     size: number,
@@ -72,6 +76,103 @@ export class FollowDao implements Dao<Follow> {
       return undefined;
     } else {
       return new Follow(output.Item.follower, output.Item.followee);
+    }
+  }
+
+  public async queryFollowers(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    if (!userAlias) {
+      throw new Error("Invalid user");
+    }
+    const params = {
+      TableName: this.tableName,
+      IndexName: this.indexName,
+      KeyConditionExpression: `${this.followee_alias} = :a`,
+      ExpressionAttributeValues: {
+        ":a": userAlias,
+      },
+      Limit: size,
+      ExclusiveStartKey: lastUser
+        ? {
+            [this.followee_alias]: userAlias,
+            [this.follower_alias]: lastUser,
+          }
+        : undefined,
+    };
+
+    const items: Follow[] = [];
+    try {
+      const data = await this.client.send(new QueryCommand(params));
+
+      if (!data) {
+        return new DataPage<Follow>([], false);
+      }
+
+      const hasMorePages = data.LastEvaluatedKey !== undefined;
+
+      if (data.Items) {
+        for (const item of data.Items) {
+          const user1 = new User("", "", item[this.follower_alias], "");
+          const user2 = new User("", "", item[this.followee_alias], "");
+          items.push(new Follow(user1, user2));
+        }
+      }
+
+      return new DataPage<Follow>(items, hasMorePages);
+    } catch (error) {
+      console.error("Error querying followers:", error);
+      throw new Error("Failed to fetch followers");
+    }
+  }
+
+  public async queryFollowees(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    if (!userAlias) {
+      throw new Error("Invalid user");
+    }
+    const params = {
+      TableName: this.tableName,
+      KeyConditionExpression: `${this.follower_alias} = :a`,
+      ExpressionAttributeValues: {
+        ":a": userAlias,
+      },
+      Limit: size,
+      ExclusiveStartKey: lastUser
+        ? {
+            [this.follower_alias]: userAlias,
+            [this.followee_alias]: lastUser,
+          }
+        : undefined,
+    };
+
+    const items: Follow[] = [];
+    try {
+      const data = await this.client.send(new QueryCommand(params));
+
+      if (!data) {
+        return new DataPage<Follow>([], false);
+      }
+
+      const hasMorePages = data.LastEvaluatedKey !== undefined;
+
+      if (data.Items) {
+        for (const item of data.Items) {
+          const user1 = new User("", "", item[this.follower_alias], "");
+          const user2 = new User("", "", item[this.followee_alias], "");
+          items.push(new Follow(user1, user2));
+        }
+      }
+
+      return new DataPage<Follow>(items, hasMorePages);
+    } catch (error) {
+      console.error("Error querying followees:", error);
+      throw new Error("Failed to fetch followees");
     }
   }
 

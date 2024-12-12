@@ -1,4 +1,4 @@
-import { Status, User } from "tweeter-shared";
+import { Follow, Status, User, UserDto } from "tweeter-shared";
 import { Dao } from "./Dao";
 import {
   DeleteCommand,
@@ -13,6 +13,24 @@ import { StatusDaoHelper } from "./StatusDaoHelper";
 import { DataPage } from "../model/domain/DataPage";
 
 export class StoryDao extends StatusDaoHelper implements Dao<Status> {
+  queryFollowers(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+  queryFollowees(
+    userAlias: string,
+    size: number,
+    lastUser?: string
+  ): Promise<DataPage<Follow>> {
+    throw new Error("Method not implemented.");
+  }
+  batchGet(names: string[]): Promise<UserDto[]> {
+    throw new Error("Method not implemented.");
+  }
+
   readonly tableName = "story";
   readonly author_alias = "author_alias";
   readonly timestamp = "timestamp";
